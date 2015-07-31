@@ -1,0 +1,29 @@
+{
+  "name": "rsvp",
+  "version": "0.0.1",
+  "description": "Accommodation Brokers Admin",
+  "main": "server.js",
+  "dependencies": {
+    "cors": "^2.7.1",
+    "express": "^4.13.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tushardhara/rsvp.git"
+  },
+  "keywords": [
+    "AngularJS",
+    "NodeJS"
+  ],
+  "author": "Tushar Dhara",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tushardhara/rsvp/issues"
+  },
+  "homepage": "https://github.com/tushardhara/rsvp#readme"
+}
