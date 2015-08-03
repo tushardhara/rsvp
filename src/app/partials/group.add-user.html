@@ -1,66 +1,36 @@
-<header>
-    <nav role="navigation" class="navbar navbar-inverse">
-      <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-          <button data-target="#bs-example-navbar-collapse-1" data-toggle="collapse" class="navbar-toggle" type="button">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a href="#" class="navbar-brand">RSVP</a>
-        </div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li><a ui-sref="dashboard">Dashboard</a></li>
-            <li class="dropdown active">
-              <a data-toggle="dropdown" class="dropdown-toggle">Groups <b class="caret"></b></a>
-              <ul role="menu" class="dropdown-menu">
-                <li class="dropdown-header">Brokers</li>
-                <li><a ui-sref="group.add-broker">Add Broker</a></li>
-                <li class="active"><a ui-sref="group.show-broker">Show Brokers</a></li>
-                <li class="divider"></li>
-                <li class="dropdown-header">Users</li>
-                <li class="active"><a ui-sref="group.add-user">Add Users</a></li>
-                <li><a ui-sref="group.show-user">Show Users</a></li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a data-toggle="dropdown" class="dropdown-toggle" href="#/dashboard">Places <b class="caret"></b></a>
-              <ul role="menu" class="dropdown-menu">
-                <li class="dropdown-header">States</li>
-                <li><a href="#/add-states">Add States</a></li>
-                <li><a href="#/show-states">Show States</a></li>
-                <li class="divider"></li>
-                <li class="dropdown-header">Regions</li>
-                <li><a href="#/add-region">Add Regions</a></li>
-                <li><a href="#/show-region">Show Regions</a></li>
-                <li class="divider"></li>
-                <li class="dropdown-header">Hotels</li>
-                <li><a href="#/add-hotel">Add Hotels</a></li>
-                <li><a href="#/show-hotel">Show Hotels</a></li>
-                <li class="dropdown-header">Room Type</li>
-                <li><a href="#/add-room-type">Add Room Type</a></li>
-                <li><a href="#/show-room-type">Show Room Type</a></li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a data-toggle="dropdown" class="dropdown-toggle" href="#/dashboard">Invoice <b class="caret"></b></a>
-              <ul role="menu" class="dropdown-menu">
-                <li class="dropdown-header">Invoice</li>
-                <li><a href="#/add-invoice">Add Invoice</a></li>
-                <li><a href="#/show-invoice">Show Invoice</a></li>
-              </ul>
-            </li>
-            <li class=""><a href="#/report">Report</a></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-          	<li class=""><a href="#/logout">Logout</a></li>
-          </ul>
-        </div><!-- /.navbar-collapse -->
-      </div><!-- /.container-fluid -->
-    </nav>
-</header>
-<div>add user</div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="col-md-12">
+        <form name="addForm" ng-submit="addUser(addForm.$valid)" novalidate>
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title">Add User</h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-12 mt-10">
+                  <div class="alert alert-danger" ng-show="(addForm.username.$invalid && addForm.username.$dirty)">
+                    <strong>Oh snap!</strong> Entry can't be blank.
+                  </div>
+                  <div class="alert alert-danger" ng-show="addForm.useremail.$invalid && addForm.useremail.$dirty">
+                    <strong>Oh snap!</strong> Email is not Correct format.
+                  </div>
+                </div>
+                <div class="col-md-12 mt-10">
+                  <input type="text" placeholder="Name" name="username" class="form-control" ng-model="username" required>
+                </div>
+                <div class="col-md-12 mt-10">  
+                  <input type="email" placeholder="Email" name="useremail" class="form-control" ng-model="useremail" required>
+                </div>
+              </div>
+            </div>
+            <div class="panel-footer">
+              <button type="Submit" class="btn btn-info" ng-disabled="addForm.$invalid" >ADD</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

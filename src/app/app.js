@@ -114,10 +114,112 @@ rsvpApp.config(function($stateProvider, $urlRouterProvider) {
       .state('group.add-user', {
         url: "/add-user",
         templateUrl: "app/partials/group.add-user.html",
+        controller: 'group.addUserCtrl',
       })
       .state('group.show-user', {
         url: "/show-user",
         templateUrl: "app/partials/group.show-user.html",
+        controller: 'group.showUserCtrl',
+        resolve: {
+          usersList: function(){
+            return [
+              {
+                "id" : 1,
+                "username" : "Ezra",
+                "useremail" : "Ezra.gmail.com"
+              },
+              {
+                "id" : 2,
+                "username" : "Atticus",
+                "useremail" : "Atticus.gmail.com"
+              },
+              {
+                "id" : 3,
+                "username" : "Asher",
+                "useremail" : "Asher.gmail.com"
+              },
+              {
+                "id" : 4,
+                "username" : "Declan",
+                "useremail" : "Declan.gmail.com"
+              },
+              {
+                "id" : 5,
+                "username" : "Oliver",
+                "useremail" : "Oliver.gmail.com"
+              },
+              {
+                "id" : 6,
+                "username" : "Ezra",
+                "useremail" : "Ezra.gmail.com"
+              },
+              {
+                "id" : 7,
+                "username" : "Atticus",
+                "useremail" : "Atticus.gmail.com"
+              },
+              {
+                "id" : 8,
+                "username" : "Asher",
+                "useremail" : "Asher.gmail.com"
+              },
+              {
+                "id" : 9,
+                "username" : "Declan",
+                "useremail" : "Declan.gmail.com"
+              },
+              {
+                "id" : 10,
+                "username" : "Oliver",
+                "useremail" : "Oliver.gmail.com"
+              }
+            ];
+          }
+        }
+      })
+    .state('place', {
+      url: "/place",
+      templateUrl: "app/partials/place.html",
+    })
+      .state('place.add-state', {
+        url: "/add-state",
+        templateUrl: "app/partials/place.add-state.html",
+        controller: 'place.addStateCtrl'
+      })
+      .state('place.show-state', {
+        url: "/show-state",
+        templateUrl: "app/partials/place.show-state.html",
+        controller: 'place.showStateCtrl'
+      })
+      .state('place.add-region', {
+        url: "/add-region",
+        templateUrl: "app/partials/place.add-region.html",
+        controller: 'place.addRegionCtrl',
+      })
+      .state('place.show-region', {
+        url: "/show-region",
+        templateUrl: "app/partials/place.show-region.html",
+        controller: 'place.showRegionCtrl'
+      })
+      .state('place.add-hotel', {
+        url: "/add-hotel",
+        templateUrl: "app/partials/place.add-hotel.html",
+        controller: 'place.addHotelCtrl'
+      })
+      .state('place.show-hotel', {
+        url: "/show-hotel",
+        templateUrl: "app/partials/place.show-hotel.html",
+        controller: 'place.showHotelCtrl'
+      })
+      .state('place.add-room-type', {
+        url: "/add-room-type",
+        templateUrl: "app/partials/place.add-room-type.html",
+        controller: 'place.addRoomTypeCtrl'
+      })
+      .state('place.show-room-type', {
+        url: "/show-room-type",
+        templateUrl: "app/partials/place.show-room-type.html",
+        controller: 'place.showRoomTypeCtrl'
       })
     ;
 });
