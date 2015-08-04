@@ -180,46 +180,94 @@ rsvpApp.config(function($stateProvider, $urlRouterProvider) {
     .state('place', {
       url: "/place",
       templateUrl: "app/partials/place.html",
+      resolve: {
+          srhrList: function(){
+            return [
+              {
+                "id":1,
+                "state" : "New South Wales",
+                "regions" : [
+                  {
+                    "name" : "Sydney Olympic Park 1",
+                    "hotels" : [
+                      {
+                        "name" : "Quest Sydney Olympic Park",
+                        "roomtype" : [
+                          "Single King",
+                          "City View Room",
+                          "Studio",
+                          "King Room",
+                          "Deluxe Room"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "name" : "Sydney Olympic Park 2",
+                    "hotels" : [
+                      {
+                        "name" : "Quest Sydney Olympic Park",
+                        "roomtype" : [
+                          "Single King",
+                          "City View Room",
+                          "Studio",
+                          "King Room",
+                          "Deluxe Room"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id":2,
+                "state" : "New South Wales",
+                "regions" : [
+                  {
+                    "name" : "Sydney Olympic Park 1",
+                    "hotels" : [
+                      {
+                        "name" : "Quest Sydney Olympic Park",
+                        "roomtype" : [
+                          "Single King",
+                          "City View Room",
+                          "Studio",
+                          "King Room",
+                          "Deluxe Room"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "name" : "Sydney Olympic Park 2",
+                    "hotels" : [
+                      {
+                        "name" : "Quest Sydney Olympic Park",
+                        "roomtype" : [
+                          "Single King",
+                          "City View Room",
+                          "Studio",
+                          "King Room",
+                          "Deluxe Room"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ];
+          }
+        }
     })
-      .state('place.add-state', {
-        url: "/add-state",
+      .state('place.add-place', {
+        url: "/add-place",
         templateUrl: "app/partials/place.add-state.html",
-        controller: 'place.addStateCtrl'
+        controller: 'place.addPlaceCtrl'
       })
-      .state('place.show-state', {
-        url: "/show-state",
-        templateUrl: "app/partials/place.show-state.html",
-        controller: 'place.showStateCtrl'
-      })
-      .state('place.add-region', {
-        url: "/add-region",
-        templateUrl: "app/partials/place.add-region.html",
-        controller: 'place.addRegionCtrl',
-      })
-      .state('place.show-region', {
-        url: "/show-region",
-        templateUrl: "app/partials/place.show-region.html",
-        controller: 'place.showRegionCtrl'
-      })
-      .state('place.add-hotel', {
-        url: "/add-hotel",
-        templateUrl: "app/partials/place.add-hotel.html",
-        controller: 'place.addHotelCtrl'
-      })
-      .state('place.show-hotel', {
-        url: "/show-hotel",
-        templateUrl: "app/partials/place.show-hotel.html",
-        controller: 'place.showHotelCtrl'
-      })
-      .state('place.add-room-type', {
-        url: "/add-room-type",
-        templateUrl: "app/partials/place.add-room-type.html",
-        controller: 'place.addRoomTypeCtrl'
-      })
-      .state('place.show-room-type', {
-        url: "/show-room-type",
-        templateUrl: "app/partials/place.show-room-type.html",
-        controller: 'place.showRoomTypeCtrl'
+      .state('place.show-place', {
+        url: "/show-place",
+        templateUrl: "app/partials/place.show-place.html",
+        controller: 'place.showPlaceCtrl'
       })
     ;
 });

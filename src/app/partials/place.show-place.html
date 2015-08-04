@@ -1,0 +1,130 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <p class="lead">List of Brokers</p>
+    </div>
+    <div class="col-md-10 mb-10">
+      <div class="form-search search-only">
+        <i class="search-icon glyphicon glyphicon-search"></i>
+        <input class="form-control search-query" type="text" ng-model="searchText" >
+      </div>
+    </div>
+    <div class="col-md-2 mb-10">
+      <input type="number" min="1" max="100" class="form-control" ng-model="pageSize">
+    </div>
+    <div class="col-md-12">
+      <div class="table-responsive">
+          <table class="table table-bordered">
+              <thead>
+                  <tr>
+                      <th>#</th>
+                      <th>State Name</th>
+                      <th>Region Name</th>
+                      <th>Hotel Name</th>
+                      <th>Room Type</th>
+                      <th>Action</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr dir-paginate="place in listOfPlaces | filter:searchText | itemsPerPage: pageSize" current-page="currentPage" pagination-id="placesPagination">
+                      <th>{{place.id}}</th>
+                      <td>{{place.statename}}</td>
+                      <td>{{place.regionname}}</td>
+                      <td>{{place.hotelname}}</td>
+                      <td>{{place.roomtype}}</td>
+                      <td>
+                        <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#editModal" ng-click="editOpen(place)">Edit</button>
+                        <button class="btn btn-danger btn-block" type="button" data-toggle="modal" data-target="#deleteModal" data-whatever="{{place}}">Delete</button>
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="app/partials/dirPagination.tpl.html" pagination-id="placesPagination"></dir-pagination-controls>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content panel panel-danger">
+      <div class="modal-header panel-heading">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title panel-title" id="myModalLabel">Delete Place</h4>
+      </div>
+      <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12 mt-10">
+              <label>
+                <input type="radio" ng-model="typedelete" name="type" value="1">
+                Do you Want to Delete this State ?
+              </label>
+            </div>
+            <div class="col-md-12">
+              <label>
+                <input type="radio" ng-model="typedelete" name="type" value="2">
+                Do you Want to Delete this Region ?
+              </label>
+            </div>
+            <div class="col-md-12">
+              <label>
+                <input type="radio" ng-model="typedelete" name="type" value="3">
+                Do you Want to Delete this Hotel ?
+              </label>
+            </div>
+            <div class="col-md-12 mb-10">
+              <label>
+                <input type="radio" ng-model="typedelete" name="type" value="4">
+                Do you Want to Delete this Room Type ?
+              </label>
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer panel-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" ng-click="deletePlace(typedelete)">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <form name="editForm" ng-submit="editPlace(editForm.$valid)">
+      <div class="modal-content panel panel-info">
+        <div class="modal-header panel-heading">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title panel-title" id="myModalLabel">Edit Broker</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12 mt-10">
+                <div class="alert alert-danger" ng-show="editForm.statename.$error.required || editForm.regionname.$error.required || editForm.hotelname.$error.required || editForm.roomtype.$error.required">
+                  <strong>Oh snap!</strong> Entry can't be blank.
+                </div>
+              </div>
+              <div class="col-md-12 mt-10">
+                <input type="text" placeholder="statename" name="statename" class="form-control" ng-model="editContent['statename']" required>
+              </div>
+              <div class="col-md-12 mt-10">
+                <input type="text" placeholder="regionname" name="regionname" class="form-control" ng-model="editContent['regionname']" required>
+              </div>
+              <div class="col-md-12 mt-10">  
+                <input type="text" placeholder="hotelname" name="hotelname" class="form-control" ng-model="editContent['hotelname']" required>
+              </div>
+              <div class="col-md-12 mt-10 mb-10">
+                <input type="text" placeholder="roomtype" name="roomtype" class="form-control" ng-model="editContent['roomtype']" required>
+              </div>
+            </div>
+        </div>
+        <div class="modal-footer panel-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="Submit" class="btn btn-info" ng-disabled="editForm.$invalid" >Edit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
