@@ -191,7 +191,17 @@ rsvpApp.config(function($stateProvider, $urlRouterProvider) {
                     "name" : "Sydney Olympic Park 1",
                     "hotels" : [
                       {
-                        "name" : "Quest Sydney Olympic Park",
+                        "name" : "Quest Sydney Olympic Park hotel 1",
+                        "roomtype" : [
+                          "Single King",
+                          "City View Room",
+                          "Studio",
+                          "King Room",
+                          "Deluxe Room"
+                        ]
+                      },
+                      {
+                        "name" : "Quest Sydney Olympic Park hotel 2",
                         "roomtype" : [
                           "Single King",
                           "City View Room",
@@ -261,7 +271,7 @@ rsvpApp.config(function($stateProvider, $urlRouterProvider) {
     })
       .state('place.add-place', {
         url: "/add-place",
-        templateUrl: "app/partials/place.add-state.html",
+        templateUrl: "app/partials/place.add-place.html",
         controller: 'place.addPlaceCtrl'
       })
       .state('place.show-place', {

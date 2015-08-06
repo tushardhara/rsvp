@@ -1,0 +1,130 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="col-md-3">
+        <form name="addFormState" ng-submit="addState(addFormState.$valid)" novalidate>
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title">Add State</h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-12 mt-10">
+                  <div class="alert alert-danger" ng-show="(addFormState.statename.$invalid && addFormState.statename.$dirty)">
+                    <strong>Oh snap!</strong> Entry can't be blank.
+                  </div>
+                </div>
+                <div class="col-md-12 mt-10">
+                  <label>State Name</label>
+                  <input type="text" placeholder="Name" name="statename" class="form-control" ng-model="statename" required>
+                </div>
+              </div>
+            </div>
+            <div class="panel-footer">
+              <button type="Submit" class="btn btn-info" ng-disabled="addFormState.$invalid" >ADD</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col-md-3">
+        <form name="addFormRegion" ng-submit="addRegion(addFormRegion.$valid)" novalidate>
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title">Add Region</h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-12 mt-10">
+                  <div class="alert alert-danger" ng-show="(addFormRegion.regionname.$invalid && addFormRegion.regionname.$dirty)">
+                    <strong>Oh snap!</strong> Entry can't be blank.
+                  </div>
+                </div>
+                <div class="col-md-12 mt-10">
+                  <label>State Name</label>
+                  <select ng-model="selectState" class="form-control" ng-options="state.state for state in states" ng-change="changeState(selectState)"></select>
+                </div>
+                <div class="col-md-12 mt-10 mb-10">
+                  <label>Region Name</label>
+                  <input type="text" placeholder="Region Name" name="regionname" class="form-control" ng-model="regionname" required>
+                </div>
+              </div>
+            </div>
+            <div class="panel-footer">
+              <button type="Submit" class="btn btn-info" ng-disabled="addFormRegion.$invalid" >ADD</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col-md-3">
+        <form name="addFormHotel" ng-submit="addHotel(addFormHotel.$valid)" novalidate>
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title">Add Hotel</h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-12 mt-10">
+                  <div class="alert alert-danger" ng-show="(addFormHotel.hotelname.$invalid && addFormHotel.hotelname.$dirty)">
+                    <strong>Oh snap!</strong> Entry can't be blank.
+                  </div>
+                </div>
+                <div class="col-md-12 mt-10">
+                  <label>State Name</label>
+                  <select ng-model="selectState" class="form-control" ng-options="state.state for state in states" ng-change="changeState(selectState)"></select>
+                </div>
+                <div class="col-md-12 mt-10">
+                  <label>Region Name</label>
+                  <select ng-model="selectRegion" class="form-control" ng-options="region.name for region in regions" ng-change="changeRegion(selectRegion)"></select>
+                </div>
+                <div class="col-md-12 mt-10 mb-10">
+                  <label>Hotel Name</label>
+                  <input type="text" placeholder="Hotel Name" name="hotelname" class="form-control" ng-model="hotelname" required>
+                </div>
+              </div>
+            </div>
+            <div class="panel-footer">
+              <button type="Submit" class="btn btn-info" ng-disabled="addFormHotel.$invalid" >ADD</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col-md-3">
+        <form name="addForm" ng-submit="addRoomType(addForm.$valid)" novalidate>
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title">Add Room Type</h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-12 mt-10">
+                  <div class="alert alert-danger" ng-show="(addForm.roomtype.$invalid && addForm.roomtype.$dirty)">
+                    <strong>Oh snap!</strong> Entry can't be blank.
+                  </div>
+                </div>
+                <div class="col-md-12 mt-10">
+                  <label>State Name</label>
+                  <select ng-model="selectState" class="form-control" ng-options="state.state for state in states" ng-change="changeState(selectState)"></select>
+                </div>
+                <div class="col-md-12 mt-10">
+                  <label>Region Name</label>
+                  <select ng-model="selectRegion" class="form-control" ng-options="region.name for region in regions" ng-change="changeRegion(selectRegion)"></select>
+                </div>
+                <div class="col-md-12 mt-10">
+                  <label>Hotel Name</label>
+                  <select ng-model="selectHotel" class="form-control" ng-options="hotel.name for hotel in hotels" ng-change="changeHotel(selectHotel)"></select>
+                </div>
+                <div class="col-md-12 mt-10 mb-10">
+                  <label>Room Type</label>
+                  <input type="text" placeholder="Name" name="roomtype" class="form-control" ng-model="roomtype" required>
+                </div>
+              </div>
+            </div>
+            <div class="panel-footer">
+              <button type="Submit" class="btn btn-info" ng-disabled="addForm.$invalid" >ADD</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
