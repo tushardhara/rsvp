@@ -4,8 +4,12 @@
   "description": "Accommodation Brokers Admin",
   "main": "server.js",
   "dependencies": {
+    "body-parser": "^1.13.3",
     "cors": "^2.7.1",
-    "express": "^4.13.1"
+    "express": "^4.13.3",
+    "express-jwt": "^3.0.1",
+    "jsonwebtoken": "^5.0.4",
+    "mongojs": "^1.2.1"
   },
   "devDependencies": {},
   "scripts": {

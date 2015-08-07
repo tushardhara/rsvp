@@ -1,11 +1,15 @@
-rsvpApp.controller('group.addUserCtrl', ['$scope',function($scope){
+rsvpApp.controller('group.addUserCtrl', ['$scope','userService',function($scope,userService){
 	$scope.addUser = function(isValid){
 	    if(isValid){
 	      	$scope.addUserData = {
-	      		'username' : $scope.username,
-		        'useremail' : $scope.useremail,
+	      		'name' : $scope.username,
+		        'email' : $scope.useremail,
+		        'type' : 'user',
+		        'password' : 'qwerty@#143'
 	      	};
-	      	console.log($scope.addUserData);
+	      	userService.addUser($scope.addUserData).then(function(data){
+	      		alert("User is Added");
+	      	})
 	    }
 	}
 }]);

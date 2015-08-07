@@ -17,24 +17,22 @@
           <table class="table table-bordered">
               <thead>
                   <tr>
-                      <th>#</th>
                       <th>Booker Name</th>
-                      <th>Company Name</th>
                       <th>Email</th>
+                      <th>Company Name</th>
                       <th>Percentage</th>
                       <th>Action</th>
                   </tr>
               </thead>
               <tbody>
                   <tr dir-paginate="broker in listOfBrokers | filter:searchText | itemsPerPage: pageSize" current-page="currentPage" pagination-id="brokersPagination">
-                      <th scope="row">{{broker.id}}</th>
                       <td>{{broker.brokername}}</td>
-                      <td>{{broker.brokercompany}}</td>
                       <td>{{broker.brokeremail}}</td>
+                      <td>{{broker.brokercompany}}</td>
                       <td>{{broker.brokerpercentage}}</td>
                       <td>
                         <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#editModal" ng-click="editOpen(broker)">Edit</button>
-                        <button class="btn btn-danger btn-block" type="button" data-toggle="modal" data-target="#deleteModal" data-whatever="{{broker.id}}">Delete</button>
+                        <button class="btn btn-danger btn-block" type="button" data-toggle="modal" data-target="#deleteModal" data-whatever="{{broker}}">Delete</button>
                       </td>
                   </tr>
               </tbody>
@@ -55,11 +53,24 @@
         <h4 class="modal-title panel-title" id="myModalLabel">Delete Broker</h4>
       </div>
       <div class="modal-body">
-          <p class="mt-10">Do you Want to Delete this Booker ?</p>
+        <div class="row">
+          <div class="col-md-12 mt-10">
+            <label>
+              <input type="radio" ng-model="typedelete" name="type" value="1">
+              Do you Want to Delete this Broker ?
+            </label>
+          </div>
+          <div class="col-md-12">
+            <label>
+              <input type="radio" ng-model="typedelete" name="type" value="2">
+              Do you Want to Delete this Company and percentage for Broker ?
+            </label>
+          </div>
+        </div>
       </div>
       <div class="modal-footer panel-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-danger" ng-click="deleteBroker()">Delete</button>
+        <button type="button" class="btn btn-danger" ng-click="deleteBroker(typedelete)">Delete</button>
       </div>
     </div>
   </div>
@@ -90,11 +101,11 @@
               <div class="col-md-12 mt-10">
                 <input type="text" placeholder="Name" name="brokername" class="form-control" ng-model="editContent['brokername']" required>
               </div>
-              <div class="col-md-12 mt-10">
-                <input type="text" placeholder="Company Name" name="brokercompany" class="form-control" ng-model="editContent['brokercompany']" required>
-              </div>
               <div class="col-md-12 mt-10">  
                 <input type="text" placeholder="Email" name="brokeremail" class="form-control" ng-model="editContent['brokeremail']" required>
+              </div>
+              <div class="col-md-12 mt-10">
+                <input type="text" placeholder="Company Name" name="brokercompany" class="form-control" ng-model="editContent['brokercompany']" required>
               </div>
               <div class="col-md-12 mt-10 mb-10">
                 <input type="number" min="0" max="100" name="brokerpercentage" class="form-control" ng-model="editContent['brokerpercentage']" required>

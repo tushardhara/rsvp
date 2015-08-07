@@ -17,7 +17,6 @@
           <table class="table table-bordered">
               <thead>
                   <tr>
-                      <th>#</th>
                       <th>User Name</th>
                       <th>Email</th>
                       <th>Action</th>
@@ -25,12 +24,11 @@
               </thead>
               <tbody>
                   <tr dir-paginate="user in listOfUsers | filter:searchText | itemsPerPage: pageSize" current-page="currentPage" pagination-id="usersPagination">
-                      <th scope="row">{{user.id}}</th>
-                      <td>{{user.username}}</td>
-                      <td>{{user.useremail}}</td>
+                      <td>{{user.name}}</td>
+                      <td>{{user.email}}</td>
                       <td>
                         <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#editModal" ng-click="editOpen(user)">Edit</button>
-                        <button class="btn btn-danger btn-block" type="button" data-toggle="modal" data-target="#deleteModal" data-whatever="{{user.id}}">Delete</button>
+                        <button class="btn btn-danger btn-block" type="button" data-toggle="modal" data-target="#deleteModal" data-whatever="{{user._id}}">Delete</button>
                       </td>
                   </tr>
               </tbody>

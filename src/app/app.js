@@ -1,5 +1,6 @@
 var rsvpApp = angular.module('rsvpApp', ['ui.router','angularUtils.directives.dirPagination']);
-rsvpApp.config(function($stateProvider, $urlRouterProvider) {
+rsvpApp.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
+  $httpProvider.interceptors.push('AuthInterceptor');
   // For any unmatched url, redirect to /state1
   $urlRouterProvider.otherwise("/");
   // Now set up the states
@@ -7,14 +8,27 @@ rsvpApp.config(function($stateProvider, $urlRouterProvider) {
     .state('login', {
       url: "/",
       templateUrl: "app/partials/login.html",
-      controller: function($scope,$location) {
+      controller: function($scope,$location,UserFactory,$rootScope) {
         $scope.submitForm = function(isValid) {
           // check to make sure the form is completely valid
-          if (isValid) { 
-            $location.path('/dashboard')
+          if (isValid) {
+            UserFactory.login($scope.user.email, $scope.user.password).then(function success(response) {
+              $rootScope.user = response.data.user;
+              $location.path('/dashboard');
+            }, function(response){
+              alert('Error: ' + response.data);
+            });
           }
 
         };
+      }
+    })
+    .state('logout', {
+      url: "/logout",
+      controller: function($scope,$location,UserFactory,$rootScope) {
+        UserFactory.logout();
+        $rootScope.user = null;
+        $location.path('/');
       }
     })
     .state('dashboard', {
@@ -35,79 +49,8 @@ rsvpApp.config(function($stateProvider, $urlRouterProvider) {
         templateUrl: "app/partials/group.show-broker.html",
         controller: 'group.showBrokerCtrl',
         resolve: {
-          brokersList: function(){
-            return [
-              {
-                "id" : 1,
-                "brokername" : "Ezra",
-                "brokercompany" : "Company Name A",
-                "brokeremail" : "Ezra.gmail.com",
-                "brokerpercentage" : 10
-              },
-              {
-                "id" : 2,
-                "brokername" : "Atticus",
-                "brokercompany" : "Company Name B",
-                "brokeremail" : "Atticus.gmail.com",
-                "brokerpercentage" : 20
-              },
-              {
-                "id" : 3,
-                "brokername" : "Asher",
-                "brokercompany" : "Company Name C",
-                "brokeremail" : "Asher.gmail.com",
-                "brokerpercentage" : 10
-              },
-              {
-                "id" : 4,
-                "brokername" : "Declan",
-                "brokercompany" : "Company Name D",
-                "brokeremail" : "Declan.gmail.com",
-                "brokerpercentage" : 5
-              },
-              {
-                "id" : 5,
-                "brokername" : "Oliver",
-                "brokercompany" : "Company Name E",
-                "brokeremail" : "Oliver.gmail.com",
-                "brokerpercentage" : 10
-              },
-              {
-                "id" : 6,
-                "brokername" : "Ezra",
-                "brokercompany" : "Company Name A",
-                "brokeremail" : "Ezra.gmail.com",
-                "brokerpercentage" : 10
-              },
-              {
-                "id" : 7,
-                "brokername" : "Atticus",
-                "brokercompany" : "Company Name B",
-                "brokeremail" : "Atticus.gmail.com",
-                "brokerpercentage" : 20
-              },
-              {
-                "id" : 8,
-                "brokername" : "Asher",
-                "brokercompany" : "Company Name C",
-                "brokeremail" : "Asher.gmail.com",
-                "brokerpercentage" : 10
-              },
-              {
-                "id" : 9,
-                "brokername" : "Declan",
-                "brokercompany" : "Company Name D",
-                "brokeremail" : "Declan.gmail.com",
-                "brokerpercentage" : 5
-              },
-              {
-                "id" : 10,
-                "brokername" : "Oliver",
-                "brokercompany" : "Company Name E",
-                "brokeremail" : "Oliver.gmail.com",
-                "brokerpercentage" : 10
-              }
-            ];
+          brokersList: function(userService){
+            return userService.getUsers();  
           }
         }
       })
@@ -121,59 +64,8 @@ rsvpApp.config(function($stateProvider, $urlRouterProvider) {
         templateUrl: "app/partials/group.show-user.html",
         controller: 'group.showUserCtrl',
         resolve: {
-          usersList: function(){
-            return [
-              {
-                "id" : 1,
-                "username" : "Ezra",
-                "useremail" : "Ezra.gmail.com"
-              },
-              {
-                "id" : 2,
-                "username" : "Atticus",
-                "useremail" : "Atticus.gmail.com"
-              },
-              {
-                "id" : 3,
-                "username" : "Asher",
-                "useremail" : "Asher.gmail.com"
-              },
-              {
-                "id" : 4,
-                "username" : "Declan",
-                "useremail" : "Declan.gmail.com"
-              },
-              {
-                "id" : 5,
-                "username" : "Oliver",
-                "useremail" : "Oliver.gmail.com"
-              },
-              {
-                "id" : 6,
-                "username" : "Ezra",
-                "useremail" : "Ezra.gmail.com"
-              },
-              {
-                "id" : 7,
-                "username" : "Atticus",
-                "useremail" : "Atticus.gmail.com"
-              },
-              {
-                "id" : 8,
-                "username" : "Asher",
-                "useremail" : "Asher.gmail.com"
-              },
-              {
-                "id" : 9,
-                "username" : "Declan",
-                "useremail" : "Declan.gmail.com"
-              },
-              {
-                "id" : 10,
-                "username" : "Oliver",
-                "useremail" : "Oliver.gmail.com"
-              }
-            ];
+          usersList: function(userService){
+            return userService.getUsers();  
           }
         }
       })
@@ -280,4 +172,120 @@ rsvpApp.config(function($stateProvider, $urlRouterProvider) {
         controller: 'place.showPlaceCtrl'
       })
     ;
-});
+}).service('userService', ['$http', '$q','AuthTokenFactory', function($http, $q,AuthTokenFactory){
+  var model = this,
+        URLS = {
+            FETCH: '/api/users'
+        },
+        users;
+
+    function extract(result) {
+        return result.data;
+    }
+
+    function cacheUsers(result) {
+        users = extract(result);
+        return users;
+    }
+
+    model.getUsers = function () {
+        if (AuthTokenFactory.getToken()) {
+          return (users) ? $q.when(users) : $http.get(URLS.FETCH).then(cacheUsers);
+        } else {
+          return $q.reject({ data: 'client has no auth token' });
+        }       
+    };
+
+    model.editUser = function (id,editData) {
+      if (AuthTokenFactory.getToken()) {
+        return $http.put(URLS.FETCH+'/'+id,editData).then(function(result){
+          return extract(result); 
+        });
+      } else {
+         return $q.reject({ data: 'client has no auth token' });
+      }
+    };
+
+    model.deleteUser = function (id) {
+      if (AuthTokenFactory.getToken()) {
+        return $http.delete(URLS.FETCH+'/'+id).then(function(result){
+          return extract(result); 
+        });
+      } else {
+         return $q.reject({ data: 'client has no auth token' });
+      }
+    };
+
+    model.addUser = function (addUser) {
+      if (AuthTokenFactory.getToken()) {
+        return $http.post(URLS.FETCH,addUser).then(function(result){
+          $http.get(URLS.FETCH).then(cacheUsers);
+          return extract(result); 
+        });
+      } else {
+         return $q.reject({ data: 'client has no auth token' });
+      }
+    };
+}]);
+
+rsvpApp.factory('UserFactory', ['$http','AuthTokenFactory','$q', function($http, AuthTokenFactory, $q){
+  return {
+      login: login,
+      logout: logout
+    };
+
+  function login(email, password) {
+    return $http.post('/api/login', {
+      email: email,
+      password: password
+    }).then(function success(response) {
+      AuthTokenFactory.setToken(response.data.token);
+      return response;
+    });
+  }
+
+  function logout() {
+    AuthTokenFactory.setToken();
+  }
+
+  function getUser() {
+    if (AuthTokenFactory.getToken()) {
+      return $http.get(API_URL + '/me');
+    } else {
+      return $q.reject({ data: 'client has no auth token' });
+    }
+  }
+}])
+
+rsvpApp.factory('AuthTokenFactory', ['$window', function($window){
+  var store = $window.localStorage;
+  var key = 'auth-token';
+  return {
+    getToken: getToken,
+    setToken: setToken
+  };
+  function getToken() {
+    return store.getItem(key);
+  }
+  function setToken(token) {
+    if (token) {
+      store.setItem(key, token);
+    } else {
+      store.removeItem(key);
+    }
+  }
+}]);
+
+rsvpApp.factory('AuthInterceptor', ['AuthTokenFactory', function(AuthTokenFactory){
+  return {
+    request: addToken
+  };
+  function addToken(config) {
+    var token = AuthTokenFactory.getToken();
+    if (token) {
+      config.headers = config.headers || {};
+      config.headers.Authorization = 'Bearer ' + token;
+    }
+    return config;
+  }
+}]);

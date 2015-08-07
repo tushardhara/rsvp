@@ -1,4 +1,4 @@
-rsvpApp.controller('group.addBrokerCtrl', ['$scope',function($scope){
+rsvpApp.controller('group.addBrokerCtrl', ['$scope','userService',function($scope,userService){
 	$scope.brokersAddList = [{
 		'brokercompany' : '',
 	    'brokerpercentage' : ''
@@ -14,16 +14,16 @@ rsvpApp.controller('group.addBrokerCtrl', ['$scope',function($scope){
 	}
 	$scope.addBroker = function(isValid){
 	    if(isValid){
-	      	$scope.addBrokerData = [];
-	      	_.each($scope.brokersAddList,function(value,key){
-	        	$scope.addBrokerData.push({
-		          	'brokername' : $scope.brokername,
-		          	'brokeremail' : $scope.brokeremail,
-		          	'brokercompany' : value.brokercompany,
-		          	'brokerpercentage' : value.brokerpercentage
-	        	});
-	      	});
-	      	console.log($scope.addBrokerData);
+	      	$scope.addBrokerData = {
+	          	'name' : $scope.brokername,
+	          	'email' : $scope.brokeremail,
+	          	'type' : 'broker',
+	          	'details' : $scope.brokersAddList,
+	          	'password' : 'qwerty@#143'
+        	};
+	      	userService.addUser($scope.addBrokerData).then(function(data){
+	      		alert("Broker is Added");
+	      	})
 	    }
 	}
 }]);
