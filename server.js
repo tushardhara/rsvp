@@ -21,8 +21,8 @@ app.use(expressJwt({ secret: jwtSecret }).unless({ path: [ '/api/login' ]}));
 
 
 var user = {
-  email: 'tushardharaster@gmail.com',
-  password: 'p'
+  email: '',
+  password: ''
 };
 
 // ROUTES FOR OUR API
@@ -175,10 +175,16 @@ function authenticate(req, res, next) {
   if (!body.email || !body.password) {
     res.status(400).end('Must provide email or password');
   }
-  if (body.email !== user.email || body.password !== user.password) {
-    res.status(401).end('email or password incorrect');
-  }
-  next();
+  usersCol.findOne({
+	    email: body.email,
+	    password : body.password
+	}, function(err, doc) {
+		if (!doc)
+		    res.status(401).end('email or password incorrect');
+		console.log("tushar");
+		user = doc;
+		next();
+	});
 }
 
 app.listen(3000, function () {

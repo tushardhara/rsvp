@@ -73,93 +73,10 @@ rsvpApp.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
       url: "/place",
       templateUrl: "app/partials/place.html",
       resolve: {
-          srhrList: function(){
-            return [
-              {
-                "id":1,
-                "state" : "New South Wales",
-                "regions" : [
-                  {
-                    "name" : "Sydney Olympic Park 1",
-                    "hotels" : [
-                      {
-                        "name" : "Quest Sydney Olympic Park hotel 1",
-                        "roomtype" : [
-                          "Single King",
-                          "City View Room",
-                          "Studio",
-                          "King Room",
-                          "Deluxe Room"
-                        ]
-                      },
-                      {
-                        "name" : "Quest Sydney Olympic Park hotel 2",
-                        "roomtype" : [
-                          "Single King",
-                          "City View Room",
-                          "Studio",
-                          "King Room",
-                          "Deluxe Room"
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "name" : "Sydney Olympic Park 2",
-                    "hotels" : [
-                      {
-                        "name" : "Quest Sydney Olympic Park",
-                        "roomtype" : [
-                          "Single King",
-                          "City View Room",
-                          "Studio",
-                          "King Room",
-                          "Deluxe Room"
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "id":2,
-                "state" : "New South Wales",
-                "regions" : [
-                  {
-                    "name" : "Sydney Olympic Park 1",
-                    "hotels" : [
-                      {
-                        "name" : "Quest Sydney Olympic Park",
-                        "roomtype" : [
-                          "Single King",
-                          "City View Room",
-                          "Studio",
-                          "King Room",
-                          "Deluxe Room"
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "name" : "Sydney Olympic Park 2",
-                    "hotels" : [
-                      {
-                        "name" : "Quest Sydney Olympic Park",
-                        "roomtype" : [
-                          "Single King",
-                          "City View Room",
-                          "Studio",
-                          "King Room",
-                          "Deluxe Room"
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }
-            ];
-          }
+        srhrList: function(placeService){
+          return placeService.getPlaces();
         }
+      }
     })
       .state('place.add-place', {
         url: "/add-place",
@@ -172,7 +89,9 @@ rsvpApp.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
         controller: 'place.showPlaceCtrl'
       })
     ;
-}).service('userService', ['$http', '$q','AuthTokenFactory', function($http, $q,AuthTokenFactory){
+});
+
+rsvpApp.service('userService', ['$http', '$q','AuthTokenFactory', function($http, $q, AuthTokenFactory){
   var model = this,
         URLS = {
             FETCH: '/api/users'
@@ -220,6 +139,62 @@ rsvpApp.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
       if (AuthTokenFactory.getToken()) {
         return $http.post(URLS.FETCH,addUser).then(function(result){
           $http.get(URLS.FETCH).then(cacheUsers);
+          return extract(result); 
+        });
+      } else {
+         return $q.reject({ data: 'client has no auth token' });
+      }
+    };
+}]);
+
+rsvpApp.service('placeService', ['$http', '$q','AuthTokenFactory', function($http, $q, AuthTokenFactory){
+  var model = this,
+        URLS = {
+            FETCH: '/api/places'
+        },
+        places;
+
+    function extract(result) {
+        return result.data;
+    }
+
+    function cachePlaces(result) {
+        places = extract(result);
+        return places;
+    }
+
+    model.getPlaces = function () {
+        if (AuthTokenFactory.getToken()) {
+          return (places) ? $q.when(places) : $http.get(URLS.FETCH).then(cachePlaces);
+        } else {
+          return $q.reject({ data: 'client has no auth token' });
+        }       
+    };
+
+    model.editPlace = function (id,editData) {
+      if (AuthTokenFactory.getToken()) {
+        return $http.put(URLS.FETCH+'/'+id,editData).then(function(result){
+          return extract(result); 
+        });
+      } else {
+         return $q.reject({ data: 'client has no auth token' });
+      }
+    };
+
+    model.deletePlace = function (id) {
+      if (AuthTokenFactory.getToken()) {
+        return $http.delete(URLS.FETCH+'/'+id).then(function(result){
+          return extract(result); 
+        });
+      } else {
+         return $q.reject({ data: 'client has no auth token' });
+      }
+    };
+
+    model.addPlace = function (addPlace) {
+      if (AuthTokenFactory.getToken()) {
+        return $http.post(URLS.FETCH,addPlace).then(function(result){
+          $http.get(URLS.FETCH).then(cachePlaces);
           return extract(result); 
         });
       } else {

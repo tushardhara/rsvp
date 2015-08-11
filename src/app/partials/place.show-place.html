@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <p class="lead">List of Brokers</p>
+      <p class="lead">List of Places</p>
     </div>
     <div class="col-md-10 mb-10">
       <div class="form-search search-only">
@@ -17,7 +17,6 @@
           <table class="table table-bordered">
               <thead>
                   <tr>
-                      <th>#</th>
                       <th>State Name</th>
                       <th>Region Name</th>
                       <th>Hotel Name</th>
@@ -27,7 +26,6 @@
               </thead>
               <tbody>
                   <tr dir-paginate="place in listOfPlaces | filter:searchText | itemsPerPage: pageSize" current-page="currentPage" pagination-id="placesPagination">
-                      <th>{{place.id}}</th>
                       <td>{{place.statename}}</td>
                       <td>{{place.regionname}}</td>
                       <td>{{place.hotelname}}</td>
@@ -110,13 +108,13 @@
                 <input type="text" placeholder="statename" name="statename" class="form-control" ng-model="editContent['statename']" required>
               </div>
               <div class="col-md-12 mt-10">
-                <input type="text" placeholder="regionname" name="regionname" class="form-control" ng-model="editContent['regionname']" required>
+                <input type="text" placeholder="regionname" ng-if="editContent['regionname'] ? true : false" name="regionname" class="form-control" ng-model="editContent['regionname']" required>
               </div>
               <div class="col-md-12 mt-10">  
-                <input type="text" placeholder="hotelname" name="hotelname" class="form-control" ng-model="editContent['hotelname']" required>
+                <input type="text" placeholder="hotelname" ng-if="editContent['hotelname'] ? true : false" name="hotelname" class="form-control" ng-model="editContent['hotelname']" required>
               </div>
               <div class="col-md-12 mt-10 mb-10">
-                <input type="text" placeholder="roomtype" name="roomtype" class="form-control" ng-model="editContent['roomtype']" required>
+                <input type="text" placeholder="roomtype" ng-if="editContent['roomtype'] ? true : false" name="roomtype" class="form-control" ng-model="editContent['roomtype']" required>
               </div>
             </div>
         </div>
