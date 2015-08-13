@@ -8,7 +8,8 @@ var express = require('express'),
 	app = express(),
 	db = mongojs('rsvp'),
 	usersCol = db.collection('users'),
-	placesCol = db.collection('places');
+	placesCol = db.collection('places'),
+	bookingsCol = db.collection('bookings');
 
 var jwtSecret = 'fjkdlsajfoew239053/3uk';
 
@@ -159,6 +160,61 @@ router.route('/places/:place_id')
 	.delete(function(req, res) {
 		placesCol.remove({ 
 			_id : mongojs.ObjectId(req.params.place_id) 
+		}, function(err, doc) {
+			if (err) 
+				res.send(err);
+		    res.json(doc);
+		});
+	});
+
+// more routes for our API will happen here
+router.route('/booking')
+	// get the places
+	.get(function(req, res) {
+   		bookingsCol.find(function(err, docs) {
+   			if (err)
+   				res.send(err);
+	    	res.json(docs);  
+		});
+	})
+	// add user 
+	.post(function(req,res){
+		bookingsCol.insert(req.body, function(err,doc){
+			if (err) 
+				res.send(err);
+			res.json(doc);
+		});
+	});
+
+router.route('/booking/:booking_id')
+	// get the user with that id
+	.get(function(req, res) {
+		bookingsCol.findOne({
+		    _id: mongojs.ObjectId(req.params.booking_id)
+		}, function(err, doc) {
+			if (err) 
+				res.send(err);
+		    res.json(doc);
+		});
+	})
+	// update the user with this id
+	.put(function(req, res) {
+		bookingsCol.update(
+		    { _id : mongojs.ObjectId(req.params.booking_id) },
+		    { $set : req.body },
+		    { multi :true}
+		, function(err, doc, lastErrorObject) {
+		    if (err)
+		    	res.send(err);
+		    if (lastErrorObject)
+		    	res.send(lastErrorObject);
+		    res.send(doc);
+		});
+	})
+	// delete the user with this id
+	.delete(function(req, res) {
+		bookingsCol.remove({ 
+			_id : mongojs.ObjectId(req.params.booking_id) 
 		}, function(err, doc) {
 			if (err) 
 				res.send(err);

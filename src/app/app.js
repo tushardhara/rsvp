@@ -1,4 +1,4 @@
-var rsvpApp = angular.module('rsvpApp', ['ui.router','angularUtils.directives.dirPagination']);
+var rsvpApp = angular.module('rsvpApp', ['ui.router','angularUtils.directives.dirPagination','ui.bootstrap']);
 rsvpApp.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   $httpProvider.interceptors.push('AuthInterceptor');
   // For any unmatched url, redirect to /state1
@@ -87,6 +87,31 @@ rsvpApp.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
         url: "/show-place",
         templateUrl: "app/partials/place.show-place.html",
         controller: 'place.showPlaceCtrl'
+      })
+    .state('booking', {
+      url: "/booking",
+      templateUrl: "app/partials/booking.html",
+      resolve: {
+        bookingList: function(bookingService){
+          return bookingService.getBookings();
+        },
+        usersList: function(userService){
+          return userService.getUsers();  
+        },
+        srhrList: function(placeService){
+          return placeService.getPlaces();
+        }
+      }
+    })
+      .state('booking.add-booking', {
+        url: "/add-booking",
+        templateUrl: "app/partials/booking.add-booking.html",
+        controller: 'booking.addBookingCtrl'
+      })
+      .state('booking.show-booking', {
+        url: "/show-booking",
+        templateUrl: "app/partials/booking.show-booking.html",
+        controller: 'booking.showBookingCtrl'
       })
     ;
 });
@@ -195,6 +220,62 @@ rsvpApp.service('placeService', ['$http', '$q','AuthTokenFactory', function($htt
       if (AuthTokenFactory.getToken()) {
         return $http.post(URLS.FETCH,addPlace).then(function(result){
           $http.get(URLS.FETCH).then(cachePlaces);
+          return extract(result); 
+        });
+      } else {
+         return $q.reject({ data: 'client has no auth token' });
+      }
+    };
+}]);
+
+rsvpApp.service('bookingService', ['$http', '$q','AuthTokenFactory', function($http, $q, AuthTokenFactory){
+  var model = this,
+        URLS = {
+            FETCH: '/api/booking'
+        },
+        bookings;
+
+    function extract(result) {
+        return result.data;
+    }
+
+    function cacheBookings(result) {
+        bookings = extract(result);
+        return bookings;
+    }
+
+    model.getBookings = function () {
+        if (AuthTokenFactory.getToken()) {
+          return (bookings) ? $q.when(bookings) : $http.get(URLS.FETCH).then(cacheBookings);
+        } else {
+          return $q.reject({ data: 'client has no auth token' });
+        }       
+    };
+
+    model.editBooking = function (id,editData) {
+      if (AuthTokenFactory.getToken()) {
+        return $http.put(URLS.FETCH+'/'+id,editData).then(function(result){
+          return extract(result); 
+        });
+      } else {
+         return $q.reject({ data: 'client has no auth token' });
+      }
+    };
+
+    model.deleteBooking = function (id) {
+      if (AuthTokenFactory.getToken()) {
+        return $http.delete(URLS.FETCH+'/'+id).then(function(result){
+          return extract(result); 
+        });
+      } else {
+         return $q.reject({ data: 'client has no auth token' });
+      }
+    };
+
+    model.addBooking = function (addBooking) {
+      if (AuthTokenFactory.getToken()) {
+        return $http.post(URLS.FETCH,addBooking).then(function(result){
+          $http.get(URLS.FETCH).then(cacheBookings);
           return extract(result); 
         });
       } else {

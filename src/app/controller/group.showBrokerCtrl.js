@@ -1,6 +1,6 @@
 rsvpApp.controller('group.showBrokerCtrl', ['$scope','brokersList','userService',function($scope,brokersList,userService){
   $scope.currentPage = 1;
-  $scope.pageSize = 2;
+  $scope.pageSize = 15;
   $scope.listOfBrokers = [];
   var temp_listOfBrokers = _.where(brokersList,{ 'type' : 'broker'});
   _.each(temp_listOfBrokers,function(value,key){

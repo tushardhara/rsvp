@@ -1,5 +1,4 @@
 rsvpApp.controller('place.addPlaceCtrl', ['$scope','srhrList','placeService',function($scope,srhrList,placeService){
-  $(".selecter_1").selecter();
   $scope.states = srhrList;
   $scope.selectState = $scope.states[0];
   $scope.regions = $scope.selectState.regions;
@@ -51,8 +50,8 @@ rsvpApp.controller('place.addPlaceCtrl', ['$scope','srhrList','placeService',fun
       });
       id = $scope.selectState._id;
       var editPlaceData = {};
-      editPlaceData.name = srhrList[indexEditState].name;
-      editPlaceData.regions = srhrList[indexEditState].regions;
+      editPlaceData.name = srhrList[indexEdit].name;
+      editPlaceData.regions = srhrList[indexEdit].regions;
       placeService.editPlace(id,editPlaceData).then(function(data){
         alert("Regions is Added");
       });

@@ -10,15 +10,21 @@
             <div class="panel-body">
               <div class="row">
                 <div class="col-md-12 mt-10">
-                  <div class="alert alert-danger" ng-show="(addForm.username.$invalid && addForm.username.$dirty)">
+                  <div class="alert alert-danger" ng-show="(addForm.selectedDes.$invalid && addForm.firstname.$dirty)">
                     <strong>Oh snap!</strong> Entry can't be blank.
                   </div>
                   <div class="alert alert-danger" ng-show="addForm.useremail.$invalid && addForm.useremail.$dirty">
                     <strong>Oh snap!</strong> Email is not Correct format.
                   </div>
                 </div>
-                <div class="col-md-12 mt-10">
-                  <input type="text" placeholder="Name" name="username" class="form-control" ng-model="username" required>
+                <div class="col-md-2 mt-10">
+                  <select ng-model="selectedDes" class="form-control" ng-options="d for d in des"></select>
+                </div>
+                <div class="col-md-5 mt-10">
+                  <input type="text" placeholder="First Name" name="firstname" class="form-control" ng-model="firstname" required>
+                </div>
+                <div class="col-md-5 mt-10">
+                  <input type="text" placeholder="Last Name" name="lastname" class="form-control" ng-model="lastname" required>
                 </div>
                 <div class="col-md-12 mt-10">  
                   <input type="email" placeholder="Email" name="useremail" class="form-control" ng-model="useremail" required>
@@ -30,6 +36,10 @@
             </div>
           </div>
         </form>
+        <div ng-show="massadd">
+          <textarea ng-model="test" class="form-control" row="5"></textarea>
+          <button ng-click="testClick()">test</button>
+        </div>
       </div>
     </div>
   </div>

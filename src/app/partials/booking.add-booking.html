@@ -1,0 +1,210 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="col-md-12">
+        <form name="addForm" ng-submit="addUser(addForm.$valid)" novalidate>
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title">Add Booking</h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="col-md-12 mt-10">
+                    <label>Invoice</label>
+                    <input type="text" placeholder="Invoice" name="invoice" class="form-control" ng-model="invoice">
+                  </div>
+                  <div class="col-md-12 mt-10">
+                    <label>Was Invoice ANZ or CBA</label>  
+                    <select ng-model="selectedAC" class="form-control" ng-options="ac for ac in anzorcba" ng-change="changeAC(selectedAC)"></select>
+                  </div>
+                  <div class="col-md-12 mt-10">
+                    <label>Category</label>  
+                    <select ng-model="selectedCAT" class="form-control" ng-options="cat for cat in category" ng-change="changeCAT(selectedCAT)"></select>
+                  </div>
+                  <div class="col-md-12 mt-10">
+                    <label>Date Invoice was sent</label>  
+                    <p class="input-group">
+                      <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="DIwS" is-open="statusDIwS.opened" min-date="minDate" max-date="'2020-06-22'" datepicker-options="dateOptions" ng-required="true" close-text="Close" disabled/>
+                      <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="openDIwS($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                      </span>
+                    </p>
+                  </div>
+                  <div class="col-md-12 mt-10">
+                    <label>Date Payment is due</label>  
+                    <p class="input-group">
+                      <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="DPwD" is-open="statusDPwD.opened" min-date="minDate" max-date="'2020-06-22'" datepicker-options="dateOptions" ng-required="true" close-text="Close" disabled/>
+                      <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="openDPwD($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                      </span>
+                    </p>
+                  </div>
+                  <div class="col-md-12 mt-10">
+                    <label>Has Invoice been Paid</label>  
+                    <select ng-model="selectedHIBP" class="form-control" ng-options="hibp for hibp in HIBPs" ng-change="changeHIPB(selectedHIBP)"></select>
+                  </div>
+                  <div class="col-md-12 mt-10">
+                    <label>Has Tax Receipt Been Requested</label>  
+                    <select ng-model="selectedHTRBR" class="form-control" ng-options="htrbr for htrbr in HTRBRs" ng-change="changeHTRBR(selectedHTRBR)"></select>
+                  </div>
+                  <div class="col-md-12 mt-10">
+                    <label>Tax Receipts Received from Properties</label>  
+                    <select ng-model="selectedTRRFP" class="form-control" ng-options="trrfp for trrfp in TRRFPs" ng-change="changeTRRFP(selectedTRRFP)"></select>
+                  </div>
+                  <div class="col-md-12 mt-10">
+                    <label>Tax Invoice Number</label>  
+                    <input type="text" placeholder="TIN Number" name="tin" class="form-control" ng-model="tin">
+                  </div>
+                  <div class="col-md-12 mt-10">
+                    <label>Client Booking Date</label>  
+                    <p class="input-group">
+                      <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="CBD" is-open="statusCBD.opened" min-date="minDate" max-date="'2020-06-22'" datepicker-options="dateOptions" ng-required="true" close-text="Close" disabled/>
+                      <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="openCBD($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                      </span>
+                    </p>
+                  </div>
+                  <div class="col-md-12 mt-10">
+                    <label>Variance in days to stay date</label>  
+                    <input type="text" placeholder="Variance in days to stay date" name="vidtsd" class="form-control" ng-model="vidtsd">
+                  </div>
+                  <div class="col-md-12 mt-10">
+                    <label>Passenger Name</label>  
+                    <input type="text" ng-model="selectedUser" placeholder="Passenger Name" typeahead="user.name for user in listOfUsers | filter:$viewValue | limitTo:8" class="form-control">
+                  </div>
+                  <div class="col-md-12 mt-10">
+                    <label>Broker Name</label>  
+                    <input type="text" ng-model="selectedBroker" placeholder="Broker Name" typeahead="broker as broker.name for broker in listOfBrokers | filter:$viewValue | limitTo:8" class="form-control">
+                  </div>
+                  <div class="col-md-12 mt-10">
+                    <label>Company Name</label>  
+                    <input type="text" ng-model="selectedCompany" placeholder="Company Name" typeahead="company as company.brokercompany for company in listOfCompanies | filter:$viewValue | limitTo:8" class="form-control" >
+                  </div>
+                  <div class="col-md-12 mt-10">
+                    <label>State</label>  
+                    <input type="text" ng-model="selectedState" placeholder="State" typeahead="state as state.state for state in listOfStates | filter:$viewValue | limitTo:8" class="form-control" >
+                  </div>
+                  <div class="col-md-12 mt-10">
+                    <label>Surburb / Region</label>  
+                    <input type="text" ng-model="selectedRegion" placeholder="Surburb / Region" typeahead="region as region.name for region in listOfRegions | filter:$viewValue | limitTo:8" class="form-control" >
+                  </div>
+                  <div class="col-md-12 mt-10">
+                    <label>Hotel/Apartment Name</label>  
+                    <input type="text" ng-model="selectedHotel" placeholder="Hotel/Apartment Name" typeahead="hotel as hotel.name for hotel in listOfHotels | filter:$viewValue | limitTo:8" class="form-control" >
+                  </div>
+                  <div class="col-md-12 mt-10">
+                    <label>Room Type</label>
+
+                    <input type="text" ng-model="selectedRoomtype" placeholder="Hotel/Apartment Name" typeahead="roomtype as roomtype for roomtype in roomtypes | filter:$viewValue | limitTo:8" class="form-control" >
+                  </div>
+                </div>
+                <div class="col-md-6">                 
+                  <div class="col-md-12 mt-10">
+                    <label>Date In</label>  
+                    <p class="input-group">
+                      <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="DI" is-open="statusDI.opened" min-date="minDate" max-date="'2020-06-22'" datepicker-options="dateOptions" ng-required="true" close-text="Close" disabled/>
+                      <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="openDI($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                      </span>
+                    </p>
+                  </div>
+                  <div class="col-md-12 mt-10">
+                    <label>Date Out</label>  
+                    <p class="input-group">
+                      <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="DO" is-open="statusDO.opened" min-date="minDate" max-date="'2020-06-22'" datepicker-options="dateOptions" ng-required="true" close-text="Close" disabled />
+                      <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="openDO($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                      </span>
+                    </p>
+                  </div>
+                  <div class="col-md-12 mt-10">
+                    <label>Year</label>  
+                    <input type="text" placeholder="Year" name="year" class="form-control" ng-model="byear" disabled>
+                  </div>
+                   <div class="col-md-12 mt-10">
+                    <label>Month of Booking</label>  
+                    <input type="text" placeholder="Month of Booking" name="month" class="form-control" ng-model="bmonth" disabled>
+                  </div>
+                  <div class="col-md-12 mt-10">
+                    <label>Reservation Confirmation Number</label>  
+                    <input type="text" placeholder="Reservation Confirmation Number" name="rcn" class="form-control" ng-model="rcn">
+                  </div>
+                  <div class="col-md-12 mt-10">
+                    <label>Type of Booking</label>  
+                    <select ng-model="selectedTypeb" class="form-control" ng-options="typeb for typeb in typeofbookings" ng-change="changeAC(selectedTypeb)"></select>
+                  </div>
+                  <div class="col-md-12 mt-10">
+                    <label>{{selectedTypeb}}</label>  
+                    <input type="text" placeholder="{{selectedTypeb}}" name="nor" class="form-control" ng-model="nor">
+                  </div>
+                  <div class="col-md-12 mt-10">
+                    <label>Number of Room Nights</label>  
+                    <input type="text" placeholder="Number of Room Nights" name="norns" class="form-control" ng-model="norns" disabled>
+                  </div>
+                  <div class="col-md-12 mt-10">
+                    <label>Rate</label>  
+                    <div class="input-group">
+                      <span class="input-group-addon">$</span>
+                      <input type="text" placeholder="Rate" name="rate" class="form-control" ng-model="rate">
+                    </div>
+                  </div>
+                  <div class="col-md-12 mt-10">
+                    <label>Credit Card Surcharge Percentage Rate</label>
+                    <select ng-model="selectedCCSPR" class="form-control" ng-options=" CCSPR as CCSPR.name for CCSPR in CCSPRs" ng-change="changeAC(selectedCCSPR)"></select>  
+                  </div>
+                  <div class="col-md-12 mt-10">
+                    <label>Credit Card Surcharge Amount</label>
+                    <div class="input-group">
+                      <span class="input-group-addon">$</span>
+                      <input type="text" placeholder="Credit Card Surcharge Amount" name="CCSA" class="form-control" ng-model="CCSA" disabled>
+                    </div>  
+                  </div>
+                  <div class="col-md-12 mt-10">
+                    <label>Total Value</label>  
+                    <div class="input-group">
+                      <span class="input-group-addon">$</span>
+                      <input type="text" placeholder="Total Value" name="totalValue" class="form-control" ng-model="totalValue" disabled>
+                    </div>
+                  </div>
+                  <div class="col-md-12 mt-10">
+                    <label>GST Amount</label>  
+                    <div class="input-group">
+                      <span class="input-group-addon">$</span>
+                     <input type="text" placeholder="GST Amount" name="GSTAmount" class="form-control" ng-model="GSTAmount" disabled>
+                    </div>
+                  </div>
+                  <div class="col-md-12 mt-10">
+                    <label>Broker Commissioned Owed</label>
+                    <div class="input-group">
+                      <input type="text" placeholder="Broker Commissioned Owed" name="BCO" class="form-control" ng-model="BCO" disabled>
+                      <span class="input-group-addon">%</span>
+                    </div>  
+                  </div>
+                  <div class="col-md-12 mt-10">
+                    <label>Commission Owed to TABS</label>  
+                    <input type="text" placeholder="Commission Owed to TABS" name="COTabs" class="form-control" ng-model="COTabs">
+                  </div>
+                  <div class="col-md-12 mt-10">
+                    <label>Total Commission</label>  
+                    <div class="input-group">
+                      <span class="input-group-addon">$</span>
+                      <input type="text" placeholder="Total Commission" name="totalComm" class="form-control" ng-model="totalComm" disabled>
+                    </div>
+                  </div>
+                  <div class="col-md-12 mt-10">
+                    <label>Comments</label>
+                    <textarea placeholder="Comments" name="comments" class="form-control" ng-model="comments" rows="3"></textarea>  
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel-footer">
+              <button type="Submit" class="btn btn-info" ng-disabled="addForm.$invalid" >ADD</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

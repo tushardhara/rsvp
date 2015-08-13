@@ -1,6 +1,6 @@
 rsvpApp.controller('group.showUserCtrl', ['$scope','usersList','userService',function($scope,usersList,userService){
   $scope.currentPage = 1;
-  $scope.pageSize = 2;
+  $scope.pageSize = 15;
   $scope.listOfUsers = _.where(usersList,{ 'type' : 'user'});
   $('#deleteModal').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget) // Button that triggered the modal

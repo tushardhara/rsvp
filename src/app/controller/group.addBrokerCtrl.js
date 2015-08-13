@@ -23,6 +23,12 @@ rsvpApp.controller('group.addBrokerCtrl', ['$scope','userService',function($scop
         	};
 	      	userService.addUser($scope.addBrokerData).then(function(data){
 	      		alert("Broker is Added");
+	      		$scope.brokername = "";
+	      		$scope.brokeremail = "";
+	      		$scope.brokersAddList = [{
+					'brokercompany' : '',
+				    'brokerpercentage' : ''
+				}];
 	      	})
 	    }
 	}
