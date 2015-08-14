@@ -1,4 +1,9 @@
-var rsvpApp = angular.module('rsvpApp', ['ui.router','angularUtils.directives.dirPagination','ui.bootstrap','ui.gravatar']);
+var rsvpApp = angular.module('rsvpApp', [
+  'ui.router',
+  'angularUtils.directives.dirPagination',
+  'ui.bootstrap',
+  'ui.gravatar'
+]);
 rsvpApp.config(['$stateProvider', '$urlRouterProvider','$httpProvider','$locationProvider',function($stateProvider, $urlRouterProvider,$httpProvider,$locationProvider) {
   $httpProvider.interceptors.push('AuthInterceptor');
   // For any unmatched url, redirect to /state1
