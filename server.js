@@ -11,7 +11,7 @@ var express = require('express'),
 	placesCol = db.collection('places'),
 	bookingsCol = db.collection('bookings');
 
-var jwtSecret = 'fjkdlsajfoew239053/3uk';
+var jwtSecret = 'fjkdlsajfoew239053/5uk';
 
 app.use(cors());
 // configure body parser
@@ -26,9 +26,11 @@ var user = {
   password: ''
 };
 
+
 // ROUTES FOR OUR API
 // =============================================================================
 var router = express.Router();              // get an instance of the express Router
+
 
 // middleware to use for all requests
 router.use(function(req, res, next) {
@@ -36,7 +38,7 @@ router.use(function(req, res, next) {
 	console.log('Something is happening.');
 	next();
 });
-
+ 
 // test route to make sure everything is working (accessed at GET http://localhost:3000/api)
 router.get('/', function(req, res) {
     res.json({ message: 'hooray! welcome to our api!' });   
@@ -54,7 +56,6 @@ router.route('/login')
 		    user: user
 		  });
 	});
-
 
 
 // more routes for our API will happen here
@@ -237,12 +238,11 @@ function authenticate(req, res, next) {
 	}, function(err, doc) {
 		if (!doc)
 		    res.status(401).end('email or password incorrect');
-		console.log("tushar");
 		user = doc;
 		next();
 	});
 }
 
-app.listen(3000, function () {
-  console.log('App listening on localhost:3000');
+app.listen(3003, function () {
+  console.log('App listening on localhost:3003');
 });

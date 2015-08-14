@@ -1,7 +1,8 @@
-var rsvpApp = angular.module('rsvpApp', ['ui.router','angularUtils.directives.dirPagination','ui.bootstrap']);
-rsvpApp.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
+var rsvpApp = angular.module('rsvpApp', ['ui.router','angularUtils.directives.dirPagination','ui.bootstrap','ui.gravatar']);
+rsvpApp.config(['$stateProvider', '$urlRouterProvider','$httpProvider','$locationProvider',function($stateProvider, $urlRouterProvider,$httpProvider,$locationProvider) {
   $httpProvider.interceptors.push('AuthInterceptor');
   // For any unmatched url, redirect to /state1
+
   $urlRouterProvider.otherwise("/");
   // Now set up the states
   $stateProvider
@@ -14,6 +15,7 @@ rsvpApp.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
           if (isValid) {
             UserFactory.login($scope.user.email, $scope.user.password).then(function success(response) {
               $rootScope.user = response.data.user;
+              console.log($rootScope.user);
               $location.path('/dashboard');
             }, function(response){
               alert('Error: ' + response.data);
@@ -114,7 +116,12 @@ rsvpApp.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
         controller: 'booking.showBookingCtrl'
       })
     ;
-});
+
+    $locationProvider.html5Mode({
+      enabled: true,
+      requireBase: false
+    });
+}]);
 
 rsvpApp.service('userService', ['$http', '$q','AuthTokenFactory', function($http, $q, AuthTokenFactory){
   var model = this,
@@ -302,14 +309,6 @@ rsvpApp.factory('UserFactory', ['$http','AuthTokenFactory','$q', function($http,
 
   function logout() {
     AuthTokenFactory.setToken();
-  }
-
-  function getUser() {
-    if (AuthTokenFactory.getToken()) {
-      return $http.get(API_URL + '/me');
-    } else {
-      return $q.reject({ data: 'client has no auth token' });
-    }
   }
 }])
 

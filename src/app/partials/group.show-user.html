@@ -13,10 +13,12 @@
       <input type="number" min="1" max="100" class="form-control" ng-model="pageSize">
     </div>
     <div class="col-md-12">
+      
       <div class="table-responsive">
           <table class="table table-bordered">
               <thead>
                   <tr>
+                      <th>Thumb</th>
                       <th>User Name</th>
                       <th>Email</th>
                       <th>Action</th>
@@ -24,6 +26,7 @@
               </thead>
               <tbody>
                   <tr dir-paginate="user in listOfUsers | filter:searchText | itemsPerPage: pageSize" current-page="currentPage" pagination-id="usersPagination">
+                      <td><img gravatar-src="user.email" gravatar-size="50"></td>
                       <td>{{user.name}}</td>
                       <td>{{user.email}}</td>
                       <td>
