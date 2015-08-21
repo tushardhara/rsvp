@@ -9,9 +9,11 @@
     "express": "^4.13.3",
     "express-jwt": "^3.0.1",
     "jsonwebtoken": "^5.0.4",
-    "mongojs": "^1.2.1"
+    "mongojs": "^1.2.1",
+    "serve-favicon": "^2.3.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",

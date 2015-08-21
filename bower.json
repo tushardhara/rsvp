@@ -17,6 +17,8 @@
     "angular-ui-router": "~0.2.15",
     "angular": "~1.4.4",
     "bootstrap": "~3.3.5",
-    "underscore": "~1.8.3"
+    "underscore": "~1.8.3",
+    "angular-cookies": "~1.4.4",
+    "c3-angular": "~0.6.0"
   }
 }

@@ -57,3 +57,11 @@
 table,th{
     text-align: center !important;
 }
+
+.rounduser{
+    border-radius: 50%;
+    margin-top: 10px;
+}
+.cursor{
+    cursor: pointer;
+}

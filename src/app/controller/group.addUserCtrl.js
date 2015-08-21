@@ -1,4 +1,9 @@
-rsvpApp.controller('group.addUserCtrl', ['$scope','userService',function($scope,userService){
+rsvpApp.controller('group.addUserCtrl', ['$scope','userService','$cookies','$rootScope',function($scope,userService,$cookies,$rootScope){
+	if($cookies.getObject('user') != null){
+      $rootScope.user = $cookies.getObject('user');
+    }else{
+      $location.path('/');
+    }
 	$scope.des = ['Mr','Ms','Mrs'];
     $scope.selectedDes = $scope.des[0];
 	$scope.addUser = function(isValid){

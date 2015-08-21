@@ -1,4 +1,9 @@
-rsvpApp.controller('place.addPlaceCtrl', ['$scope','srhrList','placeService',function($scope,srhrList,placeService){
+rsvpApp.controller('place.addPlaceCtrl', ['$scope','srhrList','placeService','$cookies','$rootScope',function($scope,srhrList,placeService,$cookies,$rootScope){
+  if($cookies.getObject('user') != null){
+    $rootScope.user = $cookies.getObject('user');
+  }else{
+    $location.path('/');
+  }
   $scope.states = srhrList;
   $scope.selectState = $scope.states[0];
   $scope.regions = $scope.selectState.regions;

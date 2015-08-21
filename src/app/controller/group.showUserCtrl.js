@@ -1,4 +1,9 @@
-rsvpApp.controller('group.showUserCtrl', ['$scope','usersList','userService',function($scope,usersList,userService){
+rsvpApp.controller('group.showUserCtrl', ['$scope','usersList','userService','$cookies','$rootScope',function($scope,usersList,userService,$cookies,$rootScope){
+  if($cookies.getObject('user') != null){
+    $rootScope.user = $cookies.getObject('user');
+  }else{
+    $location.path('/');
+  }
   $scope.currentPage = 1;
   $scope.pageSize = 15;
   $scope.listOfUsers = _.where(usersList,{ 'type' : 'user'});

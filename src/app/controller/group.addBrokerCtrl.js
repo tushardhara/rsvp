@@ -1,4 +1,9 @@
-rsvpApp.controller('group.addBrokerCtrl', ['$scope','userService',function($scope,userService){
+rsvpApp.controller('group.addBrokerCtrl', ['$scope','userService','$cookies','$rootScope',function($scope,userService,$cookies,$rootScope){
+	if($cookies.getObject('user') != null){
+      $rootScope.user = $cookies.getObject('user');
+    }else{
+      $location.path('/');
+    }
 	$scope.brokersAddList = [{
 		'brokercompany' : '',
 	    'brokerpercentage' : ''

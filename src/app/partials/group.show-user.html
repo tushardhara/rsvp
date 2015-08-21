@@ -21,17 +21,17 @@
                       <th>Thumb</th>
                       <th>User Name</th>
                       <th>Email</th>
-                      <th>Action</th>
+                      <th ng-if="user.type == 'admin'">Action</th>
                   </tr>
               </thead>
               <tbody>
-                  <tr dir-paginate="user in listOfUsers | filter:searchText | itemsPerPage: pageSize" current-page="currentPage" pagination-id="usersPagination">
-                      <td><img gravatar-src="user.email" gravatar-size="50"></td>
-                      <td>{{user.name}}</td>
-                      <td>{{user.email}}</td>
-                      <td>
-                        <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#editModal" ng-click="editOpen(user)"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
-                        <button class="btn btn-danger btn-sm" type="button" data-toggle="modal" data-target="#deleteModal" data-whatever="{{user._id}}"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                  <tr dir-paginate="users in listOfUsers | filter:searchText | itemsPerPage: pageSize" current-page="currentPage" pagination-id="usersPagination">
+                      <td><img gravatar-src="users.email" gravatar-size="50"></td>
+                      <td>{{users.name}}</td>
+                      <td>{{users.email}}</td>
+                      <td ng-if="user.type == 'admin'">
+                        <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#editModal" ng-click="editOpen(users)"><span class="glyphicon glyphicon-pencil" aria-hidden="true" ></span></button>
+                        <button class="btn btn-danger btn-sm" type="button" data-toggle="modal" data-target="#deleteModal" data-whatever="{{users._id}}"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
                       </td>
                   </tr>
               </tbody>

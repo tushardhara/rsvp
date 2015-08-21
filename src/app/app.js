@@ -2,7 +2,9 @@ var rsvpApp = angular.module('rsvpApp', [
   'ui.router',
   'angularUtils.directives.dirPagination',
   'ui.bootstrap',
-  'ui.gravatar'
+  'ui.gravatar',
+  'ngCookies',
+  'gridshore.c3js.chart'
 ]);
 rsvpApp.config(['$stateProvider', '$urlRouterProvider','$httpProvider','$locationProvider',function($stateProvider, $urlRouterProvider,$httpProvider,$locationProvider) {
   $httpProvider.interceptors.push('AuthInterceptor');
@@ -14,13 +16,24 @@ rsvpApp.config(['$stateProvider', '$urlRouterProvider','$httpProvider','$locatio
     .state('login', {
       url: "/",
       templateUrl: "app/partials/login.html",
-      controller: function($scope,$location,UserFactory,$rootScope) {
+      controller: function($scope,$location,UserFactory,$rootScope,$cookies) {
+        if($cookies.getObject('user') != null){
+          $rootScope.user = $cookies.getObject('user');
+          $location.path('/dashboard');
+        }else{
+          $location.path('/');
+        }
         $scope.submitForm = function(isValid) {
           // check to make sure the form is completely valid
           if (isValid) {
             UserFactory.login($scope.user.email, $scope.user.password).then(function success(response) {
-              $rootScope.user = response.data.user;
-              console.log($rootScope.user);
+              $rootScope.user = {
+                "_id"  : response.data.user._id,
+                "name" : response.data.user.name,
+                "email" : response.data.user.email,
+                "type"  : response.data.user.type,
+              }
+              $cookies.putObject('user', $rootScope.user);
               $location.path('/dashboard');
             }, function(response){
               alert('Error: ' + response.data);
@@ -32,15 +45,92 @@ rsvpApp.config(['$stateProvider', '$urlRouterProvider','$httpProvider','$locatio
     })
     .state('logout', {
       url: "/logout",
-      controller: function($scope,$location,UserFactory,$rootScope) {
+      controller: function($scope,$location,UserFactory,$rootScope,$cookies) {
         UserFactory.logout();
         $rootScope.user = null;
+        $cookies.remove('user');
         $location.path('/');
       }
     })
     .state('dashboard', {
       url: "/dashboard",
       templateUrl: "app/partials/dashboard.html",
+      controller: function($scope,$cookies,$rootScope,usersList,bookingList) {
+        if($cookies.getObject('user') != null){
+          $rootScope.user = $cookies.getObject('user');
+        }else{
+          $location.path('/');
+        }
+        total_booking = _.size(bookingList);
+
+        $scope.category = [
+          {name:'Corporate FIT – Contracted',value: _.size(_.where(bookingList,{"Category":'Corporate FIT – Contracted'}))},
+          {name:'Corporate FIT – Non-Contracted',value: _.size(_.where(bookingList,{"Category":'Corporate FIT – Non-Contracted'}))},
+          {name:'Leisure FIT',value: _.size(_.where(bookingList,{"Category":'Leisure FIT'}))},
+          {name:'Govt FIT – Contracted',value: _.size(_.where(bookingList,{"Category":'Govt FIT – Contracted'}))},
+          {name:'Govt FIT – Non-Contracted',value: _.size(_.where(bookingList,{"Category":'Govt FIT – Non-Contracted'}))},
+          {name:'Meetings',value: _.size(_.where(bookingList,{"Category":'Meetings'}))},
+          {name:'Conferences',value: _.size(_.where(bookingList,{"Category":'Conferences'}))},
+          {name:'Exhibitions',value: _.size(_.where(bookingList,{"Category":'Exhibitions'}))},
+          {name:'Dinner Event',value: _.size(_.where(bookingList,{"Category":'Dinner Event'}))},
+          {name:'Lunch Event',value: _.size(_.where(bookingList,{"Category":'Lunch Event'}))},
+          {name:'Breakfast Event',value: _.size(_.where(bookingList,{"Category":'Breakfast Event'}))},
+          {name:'Weddings',value: _.size(_.where(bookingList,{"Category":'Weddings'}))},
+        ];
+        console.log(usersList);
+        $scope.ub = [
+          {name:'Users',value: _.size(_.where(usersList,{"type":'user'}))},
+          {name:'Brokers',value: _.size(_.where(usersList,{"type":'broker'}))},
+        ];
+        $scope.currentPage = 1;
+        $scope.pageSize = 15;
+        $scope.listOfBookings = [];
+        $scope.smalltable = true;
+        if($rootScope.user.type == 'admin'){
+            $scope.listOfBookings = _.where(bookingList,{ 'varificattion' : 'pending'});
+        }else{
+            $scope.listOfBookings = _.where(bookingList,{ 'Broker_Name' : $rootScope.user.name,'varificattion' : 'pending'});
+        }
+        $('#deleteModal').on('show.bs.modal', function (event) {
+          var button = $(event.relatedTarget) // Button that triggered the modal
+          $scope.deleteId = button.data('whatever') // Extract info from data-* attributes
+        });
+        $scope.deleteBooking = function(){
+          //use $scope.deleteId to delete form mongodb
+          $scope.listOfBookings = _.without($scope.listOfBookings,_.findWhere($scope.listOfBookings, {"_id": $scope.deleteId}));
+          bookingService.deleteBooking($scope.deleteId);
+          $('#deleteModal').modal('hide');
+        }
+        $scope.updateStatus = function(booking){
+          console.log(booking);
+          if(booking.varificattion == 'pending'){
+            indexEdit =_.indexOf(_.pluck($scope.listOfBookings,'_id'), booking._id);
+            editData = {
+              "varificattion" : "completed"
+            }
+            bookingService.editBooking(booking._id,editData).then(function(){
+              $scope.listOfBookings[indexEdit].varificattion = 'completed';
+            });
+          }else{
+            indexEdit =_.indexOf(_.pluck($scope.listOfBookings,'_id'), booking._id);
+            editData = {
+              "varificattion" : "pending"
+            }
+            bookingService.editBooking(booking._id,editData).then(function(){
+              $scope.listOfBookings[indexEdit].varificattion = 'pending';
+            });
+            
+          }
+        }
+      },
+      resolve: {
+        usersList: function(userService){
+          return userService.getUsers();  
+        },
+        bookingList: function(bookingService){
+          return bookingService.getBookings();
+        },
+      }
     })
     .state('group', {
       url: "/group",
@@ -120,12 +210,28 @@ rsvpApp.config(['$stateProvider', '$urlRouterProvider','$httpProvider','$locatio
         templateUrl: "app/partials/booking.show-booking.html",
         controller: 'booking.showBookingCtrl'
       })
+      .state('booking.edit-booking', {
+        url: "/edit-booking/:bookingId",
+        templateUrl: "app/partials/booking.edit-booking.html",
+        controller: 'booking.editBookingCtrl'
+      })
+    .state('report', {
+      url: "/report",
+      templateUrl: "app/partials/report.html",
+      controller: 'report.showReportCtrl',
+      resolve: {
+        bookingList: function(bookingService){
+          return bookingService.getBookings();
+        },
+        usersList: function(userService){
+          return userService.getUsers();  
+        },
+        srhrList: function(placeService){
+          return placeService.getPlaces();
+        }
+      }
+    })
     ;
-
-    $locationProvider.html5Mode({
-      enabled: true,
-      requireBase: false
-    });
 }]);
 
 rsvpApp.service('userService', ['$http', '$q','AuthTokenFactory', function($http, $q, AuthTokenFactory){

@@ -1,5 +1,6 @@
 
 var express = require('express'),
+	favicon = require('serve-favicon'),
 	bodyParser = require('body-parser'),
 	cors = require('cors'),
 	mongojs = require('mongojs')
@@ -11,13 +12,15 @@ var express = require('express'),
 	placesCol = db.collection('places'),
 	bookingsCol = db.collection('bookings');
 
-var jwtSecret = 'fjkdlsajfoew239053/5uk';
+var jwtSecret = 'fjkdlsajfoew239053/8uk';
 
 app.use(cors());
 // configure body parser
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/src'));
+app.use(favicon(__dirname + '/src/static/favicon.ico'));
 app.use(expressJwt({ secret: jwtSecret }).unless({ path: [ '/api/login' ]}));
 
 
@@ -243,6 +246,6 @@ function authenticate(req, res, next) {
 	});
 }
 
-app.listen(3003, function () {
-  console.log('App listening on localhost:3003');
+app.listen(3000, function () {
+  console.log('App listening on localhost:3000');
 });

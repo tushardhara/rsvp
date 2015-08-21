@@ -1,4 +1,9 @@
-rsvpApp.controller('place.showPlaceCtrl', ['$scope','srhrList','placeService',function($scope,srhrList,placeService){
+rsvpApp.controller('place.showPlaceCtrl', ['$scope','srhrList','placeService','$cookies','$rootScope',function($scope,srhrList,placeService,$cookies,$rootScope){
+  if($cookies.getObject('user') != null){
+    $rootScope.user = $cookies.getObject('user');
+  }else{
+    $location.path('/');
+  }
   $scope.currentPage = 1;
   $scope.pageSize = 30;
   $scope.listOfPlaces = [];

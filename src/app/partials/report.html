@@ -1,0 +1,52 @@
+<header ng-include src="'app/include/header.html'"></header>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 mt-10">
+			<div class="col-md-3 mt-10">
+		        <label>Start Date</label>  
+		        <p class="input-group">
+		          <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="Start" is-open="statusStart.opened" min-date="minDate" max-date="'2020-06-22'" datepicker-options="dateOptions" ng-required="true" close-text="Close" disabled/>
+		          <span class="input-group-btn">
+		            <button type="button" class="btn btn-default" ng-click="openStart($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+		          </span>
+		        </p>
+	      	</div>
+	      	<div class="col-md-3 mt-10">
+		        <label>End Date</label>  
+		        <p class="input-group">
+		          <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="End" is-open="statusEnd.opened" min-date="minDate" max-date="'2020-06-22'" datepicker-options="dateOptions" ng-required="true" close-text="Close" disabled/>
+		          <span class="input-group-btn">
+		            <button type="button" class="btn btn-default" ng-click="openEnd($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+		          </span>
+		        </p>
+	      	</div>
+      	</div>
+		<div class="col-md-6 mt-10">
+			<h3>Monthly Revenue Graph</h3>
+			<c3chart bindto-id="income" chart-data="datapoints1" chart-columns="datacolumns1" chart-x="datax1">
+			  	<chart-axis>
+			    	<chart-axis-x axis-position="outer-center" axis-label="Months" axis-type="category">
+			        	<chart-axis-x-tick tick-rotate="0"/>
+			      	</chart-axis-x>
+			    	<chart-axis-y axis-id="y" axis-position="outer-right" axis-label="$" padding-top="100" padding-bottom="0" range-min="0"/>
+			  	</chart-axis>
+			</c3chart>
+			<h4>Total Revenue : ${{totalR}}</h4>
+			<h4>Total Broker Commission : ${{totalB}}</h4>
+			<h4>Total Commission Own : ${{totalAB}}</h4>
+			<h4>Total GST Amount : ${{totalGST}}</h4>
+		</div>
+		<div class="col-md-6 mt-10">
+			<h3>Number of Room Nights Graph</h3>
+			<c3chart bindto-id="nor" chart-data="datapoints2" chart-columns="datacolumns2" chart-x="datax1">
+			  	<chart-axis>
+			    	<chart-axis-x axis-position="outer-center" axis-label="Months" axis-type="category">
+			        	<chart-axis-x-tick tick-rotate="0"/>
+			      	</chart-axis-x>
+			    	<chart-axis-y axis-id="y" axis-position="outer-right" axis-label="Number of Room Nights" padding-top="100" padding-bottom="0" range-min="0"/>
+			  	</chart-axis>
+			</c3chart>
+			<h4>Total No. of Room Night : {{totalNR}}</h4>
+		</div>
+	</div>
+</div>

@@ -1,8 +1,19 @@
-rsvpApp.controller('group.showBrokerCtrl', ['$scope','brokersList','userService',function($scope,brokersList,userService){
+rsvpApp.controller('group.showBrokerCtrl', ['$scope','brokersList','userService','$cookies','$rootScope',function($scope,brokersList,userService,$cookies,$rootScope){
+  if($cookies.getObject('user') != null){
+    $rootScope.user = $cookies.getObject('user');
+  }else{
+    $location.path('/');
+  }
   $scope.currentPage = 1;
   $scope.pageSize = 15;
   $scope.listOfBrokers = [];
-  var temp_listOfBrokers = _.where(brokersList,{ 'type' : 'broker'});
+  var temp_listOfBrokers = [];
+  if($rootScope.user.type == 'admin'){
+    temp_listOfBrokers = _.where(brokersList,{ 'type' : 'broker'});
+  }else{
+    temp_listOfBrokers = _.where(brokersList,{ 'type' : 'broker' , 'email' : $rootScope.user.email});
+  }
+   
   _.each(temp_listOfBrokers,function(value,key){
     _.each(value.details,function(valueD,keyD){
       $scope.listOfBrokers.push({
@@ -63,15 +74,15 @@ rsvpApp.controller('group.showBrokerCtrl', ['$scope','brokersList','userService'
         $scope.listOfBrokers[indexEdit].brokerpercentage = $scope.editContent.brokerpercentage;
       
         indexEdit = _.indexOf(_.pluck(temp_listOfBrokers,'_id'), $scope.editContent.id);
-        $scope.editBroker = {};
-        $scope.editBroker.name = $scope.editContent.brokername;
-        $scope.editBroker.email = $scope.editContent.brokeremail;
+        $scope.editBrokerData = {};
+        $scope.editBrokerData.name = $scope.editContent.brokername;
+        $scope.editBrokerData.email = $scope.editContent.brokeremail;
         indexCompany = _.indexOf(_.pluck(temp_listOfBrokers[indexEdit].details,'brokercompany'), $scope.brokertemp.brokercompany);
         temp_listOfBrokers[indexEdit].details[indexCompany].brokercompany = $scope.editContent.brokercompany;
         temp_listOfBrokers[indexEdit].details[indexCompany].brokerpercentage = $scope.editContent.brokerpercentage;
-        $scope.editBroker.details = temp_listOfBrokers[indexEdit].details;
-
-        userService.editUser($scope.editContent.id,$scope.editBroker);
+        $scope.editBrokerData.details = temp_listOfBrokers[indexEdit].details;
+        
+        userService.editUser($scope.editContent.id,$scope.editBrokerData);
         $('#editModal').modal('hide');
       }
   }
