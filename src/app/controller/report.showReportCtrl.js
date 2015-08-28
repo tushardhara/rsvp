@@ -7,7 +7,22 @@ rsvpApp.controller('report.showReportCtrl', ['$scope','bookingList','bookingServ
   $scope.months =["January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
       ];
-
+  $scope.category = [
+    'All',
+    'Corporate FIT – Contracted',
+    'Corporate FIT – Non-Contracted',
+    'Leisure FIT',
+    'Govt FIT – Contracted',
+    'Govt FIT – Non-Contracted',
+    'Meetings',
+    'Conferences',
+    'Exhibitions',
+    'Dinner Event',
+    'Lunch Event',
+    'Breakfast Event',
+    'Weddings'
+  ];
+  $scope.selectedCAT = $scope.category[0];
   $scope.today = function() {
     $scope.Start = new Date();
     $scope.End = new Date();
@@ -39,11 +54,13 @@ rsvpApp.controller('report.showReportCtrl', ['$scope','bookingList','bookingServ
 
   
   $scope.data = [];
-
+  $scope.numberofdays = "";
   $scope.diffrentMonths = [];
-  $scope.$watchGroup(['Start','End'],function(newValue,oldValue){
-    if(!_.isUndefined(newValue[0]) && !_.isUndefined(newValue[1])){
+  $scope.$watchGroup(['Start','End','selectedCAT'],function(newValue,oldValue){
+    if(!_.isUndefined(newValue[0]) && !_.isUndefined(newValue[1]) && !_.isUndefined(newValue[2])){
       numberOfMonths = monthDiff(newValue[0],newValue[1]);
+      $scope.numberofdays = numberofdays(newValue[0],newValue[1]);
+      console.log($scope.numberofdays);
       $scope.diffrentMonths=[];
       for(i=newValue[0].getMonth();i<newValue[0].getMonth()+numberOfMonths;i++){
         var d = new Date(newValue[0]),
@@ -52,12 +69,22 @@ rsvpApp.controller('report.showReportCtrl', ['$scope','bookingList','bookingServ
         x.setMonth(i);
         $scope.diffrentMonths.push($scope.months[d.getMonth()]+'-'+x.getFullYear());
       }
-      if($rootScope.user.type == 'admin'){
-        $scope.data = _.where(bookingList,{ 'varificattion' : 'completed'});
-      }else if($rootScope.user.type == 'broker'){
-        $scope.data = _.where(bookingList,{ 'Broker_Name' : $rootScope.user.name,'varificattion' : 'completed'});
+      if(newValue[2] == 'All'){
+        if($rootScope.user.type == 'admin'){
+          $scope.data = _.where(bookingList,{ 'varificattion' : 'completed'});
+        }else if($rootScope.user.type == 'broker'){
+          $scope.data = _.where(bookingList,{ 'Broker_Name' : $rootScope.user.name,'varificattion' : 'completed'});
+        }else{
+          $scope.data = _.where(bookingList,{ 'Passenger_Name' : $rootScope.user.name,'varificattion' : 'completed'});
+        }
       }else{
-        $scope.data = _.where(bookingList,{ 'Passenger_Name' : $rootScope.user.name,'varificattion' : 'completed'});
+        if($rootScope.user.type == 'admin'){
+          $scope.data = _.where(bookingList,{ 'varificattion' : 'completed','Category' : newValue[2] });
+        }else if($rootScope.user.type == 'broker'){
+          $scope.data = _.where(bookingList,{ 'Broker_Name' : $rootScope.user.name,'varificattion' : 'completed' , 'Category' : newValue[2] });
+        }else{
+          $scope.data = _.where(bookingList,{ 'Passenger_Name' : $rootScope.user.name,'varificattion' : 'completed', 'Category' : newValue[2]});
+        }
       }   
     }
   });
@@ -122,7 +149,9 @@ rsvpApp.controller('report.showReportCtrl', ['$scope','bookingList','bookingServ
       months = months + d2.getMonth();
      return months <= 0 ? 0 : months;
   }
-
+  function numberofdays(d1,d2){
+      return (d2 - d1) / (1000*60*60*24);
+  }
   function calculate(newValue){
     for(i=0;i<newValue.length;i++){
       for(j=0;j<$scope.data.length;j++){

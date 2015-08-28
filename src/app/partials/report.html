@@ -20,9 +20,14 @@
 		          </span>
 		        </p>
 	      	</div>
+	      	<div class="col-md-3 mt-10">
+		        <label>Category</label>  
+                <select ng-model="selectedCAT" class="form-control" ng-options="cat for cat in category"></select>
+	      	</div>
       	</div>
 		<div class="col-md-6 mt-10">
-			<h3>Monthly Revenue Graph</h3>
+			<h4 align="center">Monthly Revenue Graph</h4>
+			<hr/>
 			<c3chart bindto-id="income" chart-data="datapoints1" chart-columns="datacolumns1" chart-x="datax1">
 			  	<chart-axis>
 			    	<chart-axis-x axis-position="outer-center" axis-label="Months" axis-type="category">
@@ -31,13 +36,22 @@
 			    	<chart-axis-y axis-id="y" axis-position="outer-right" axis-label="$" padding-top="100" padding-bottom="0" range-min="0"/>
 			  	</chart-axis>
 			</c3chart>
-			<h4>Total Revenue : ${{totalR}}</h4>
-			<h4>Total Broker Commission : ${{totalB}}</h4>
-			<h4>Total Commission Own : ${{totalAB}}</h4>
-			<h4>Total GST Amount : ${{totalGST}}</h4>
+			<div class="col-md-6 mt-10">
+				<h6>Total Revenue : <b>${{totalR}}</b></h6>
+				<h6>Total Broker Commission : <b>${{totalB}}</b></h6>
+				<h6>Total Commission Own : <b>${{totalAB}}</b></h6>
+				<h6>Total GST Amount : <b>${{totalGST | number:2 }}</b></h6>
+			</div>
+			<div class="col-md-6 mt-10">
+				<h6>Avg Total Revenue : <b>${{totalR / totalNR | number:2}}</b></h6>
+				<h6>Avg Total Broker Commission : <b>${{totalB / totalNR | number:2}}</b></h6>
+				<h6>Avg Total Commission Own : <b>${{totalAB / totalNR | number:2}}</b></h6>
+				<h6>Avg Total GST Amount : <b>${{totalGST / totalNR | number:2}}</b></h6>
+			</div>
 		</div>
 		<div class="col-md-6 mt-10">
-			<h3>Number of Room Nights Graph</h3>
+			<h4 align="center">Number of Room Nights Graph</h4>
+			<hr/>
 			<c3chart bindto-id="nor" chart-data="datapoints2" chart-columns="datacolumns2" chart-x="datax1">
 			  	<chart-axis>
 			    	<chart-axis-x axis-position="outer-center" axis-label="Months" axis-type="category">
@@ -46,7 +60,21 @@
 			    	<chart-axis-y axis-id="y" axis-position="outer-right" axis-label="Number of Room Nights" padding-top="100" padding-bottom="0" range-min="0"/>
 			  	</chart-axis>
 			</c3chart>
-			<h4>Total No. of Room Night : {{totalNR}}</h4>
+			<div class="col-md-6 mt-10">
+				<h6>Total No. of Room Night : <b>{{totalNR}}</b></h6>
+			</div>
+			<div class="col-md-6 mt-10">
+				<h6>Total No. of Room Night : <b>{{totalNR / numberofdays | number:2}}</b></h6>
+			</div>
 		</div>
+		<div class="col-md-12 mt-10">
+			<h4 align="center">Name of Travellers, Hotels Utilised and Room Nights Used for the period: <b>{{Start | date:'mediumDate'}} to {{End | date:'mediumDate'}}</b></h4>
+			<hr/>
+		</div>
+		<div class="col-md-12 mt-10">
+			<h4 align="center">Summary of Hotels utilised: <b>{{Start | date:'mediumDate'}} to {{End | date:'mediumDate'}}</b></h4>
+			<hr/>
+		</div>
+		
 	</div>
 </div>
