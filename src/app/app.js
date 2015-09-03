@@ -77,7 +77,7 @@ rsvpApp.config(['$stateProvider', '$urlRouterProvider','$httpProvider','$locatio
           {name:'Breakfast Event',value: _.size(_.where(bookingList,{"Category":'Breakfast Event'}))},
           {name:'Weddings',value: _.size(_.where(bookingList,{"Category":'Weddings'}))},
         ];
-        console.log(usersList);
+        //console.log(usersList);
         $scope.ub = [
           {name:'Users',value: _.size(_.where(usersList,{"type":'user'}))},
           {name:'Brokers',value: _.size(_.where(usersList,{"type":'broker'}))},

@@ -60,7 +60,7 @@ rsvpApp.controller('report.showReportCtrl', ['$scope','bookingList','bookingServ
     if(!_.isUndefined(newValue[0]) && !_.isUndefined(newValue[1]) && !_.isUndefined(newValue[2])){
       numberOfMonths = monthDiff(newValue[0],newValue[1]);
       $scope.numberofdays = numberofdays(newValue[0],newValue[1]);
-      console.log($scope.numberofdays);
+      //console.log($scope.numberofdays);
       $scope.diffrentMonths=[];
       for(i=newValue[0].getMonth();i<newValue[0].getMonth()+numberOfMonths;i++){
         var d = new Date(newValue[0]),
@@ -106,6 +106,7 @@ rsvpApp.controller('report.showReportCtrl', ['$scope','bookingList','bookingServ
     $scope.datapoints1 = [];
     $scope.datapoints2 = [];
     $scope.result = [];
+    $scope.userdata = [];
     for(i=0;i<newValue[0].length;i++){
       $scope.result.push({
         'sumNor' : 0,
@@ -129,6 +130,10 @@ rsvpApp.controller('report.showReportCtrl', ['$scope','bookingList','bookingServ
         "top-1": $scope.result[i].sumNor, 
       });
     }
+    $scope.userusedrate = _.groupBy($scope.userdata,function(data){return data.Passenger_Name});
+    $scope.hotelusedrate = _.groupBy($scope.userdata,function(data){return data.Hotel});
+    console.log($scope.hotelusedrate);
+    //console.log(_.groupBy(_.pluck($scope.result, 'userdata'),function(data){return data.Passenger_Name}));
     $scope.totalR = _.reduce(_.pluck($scope.result, 'sumPrice'), function(memo, num){ return memo + num; }, 0);
     $scope.totalB = _.reduce(_.pluck($scope.result, 'sumBroker'), function(memo, num){ return memo + num; }, 0);
     $scope.totalAB = _.reduce(_.pluck($scope.result, 'sumCommission'), function(memo, num){ return memo + num; }, 0);
@@ -166,6 +171,7 @@ rsvpApp.controller('report.showReportCtrl', ['$scope','bookingList','bookingServ
           $scope.result[i].sumGST_Amount = $scope.result[i].sumGST_Amount + Math.round(($scope.result[i].sumPrice / 11) * 100) / 100;
           $scope.result[i].sumBroker = $scope.result[i].sumBroker + $scope.result[i].sumPrice * $scope.data[j].Broker_Commissioned_Owed / 100;
           $scope.result[i].sumCommission = $scope.result[i].sumCommission + $scope.result[i].sumPrice * $scope.data[j].Commission_Owed_To_TABS / 100;
+          $scope.userdata.push($scope.data[j]);
         }else
         if(d1Month == newValue[i] && d2Month == newValue[i+1]){
           lastdate = numberOfDays(d1.getFullYear(),d1.getMonth());
@@ -176,6 +182,7 @@ rsvpApp.controller('report.showReportCtrl', ['$scope','bookingList','bookingServ
           $scope.result[i].sumGST_Amount = $scope.result[i].sumGST_Amount + Math.round(($scope.result[i].sumPrice / 11) * 100) / 100;
           $scope.result[i].sumBroker = $scope.result[i].sumBroker + $scope.result[i].sumPrice * $scope.data[j].Broker_Commissioned_Owed / 100;
           $scope.result[i].sumCommission = $scope.result[i].sumCommission + $scope.result[i].sumPrice * $scope.data[j].Commission_Owed_To_TABS / 100;
+          $scope.userdata.push($scope.data[j]);
           dfirst = new Date(d2.getFullYear()+'-'+(d2.getMonth()+1)+'-'+'01');
           tdif = Math.ceil((d2 - dfirst)/(1000 * 3600 * 24));
           $scope.result[i+1].sumNor = $scope.result[i+1].sumNor + tdif;
@@ -193,6 +200,7 @@ rsvpApp.controller('report.showReportCtrl', ['$scope','bookingList','bookingServ
             $scope.result[i].sumGST_Amount = $scope.result[i].sumGST_Amount + Math.round(($scope.result[i].sumPrice / 11) * 100) / 100;
             $scope.result[i].sumBroker = $scope.result[i].sumBroker + $scope.result[i].sumPrice * $scope.data[j].Broker_Commissioned_Owed / 100;
             $scope.result[i].sumCommission = $scope.result[i].sumCommission + $scope.result[i].sumPrice * $scope.data[j].Broker_Commissioned_Owed / 100;
+            $scope.userdata.push($scope.data[j]);
           }         
         }
       }

@@ -2,6 +2,9 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-12 mt-10">
+			<div class="col-md-1 mt-10">
+				<p class="filters"><span class="label label-info">Filters</span></p>
+			</div>
 			<div class="col-md-3 mt-10">
 		        <label>Start Date</label>  
 		        <p class="input-group">
@@ -70,11 +73,75 @@
 		<div class="col-md-12 mt-10">
 			<h4 align="center">Name of Travellers, Hotels Utilised and Room Nights Used for the period: <b>{{Start | date:'mediumDate'}} to {{End | date:'mediumDate'}}</b></h4>
 			<hr/>
+			<div ng-repeat="(userkey, uservalue) in userusedrate">
+				<h6 align="center"><span class="label label-primary">{{userkey}}</span></h6>
+				<div class="table-responsive">
+			        <table class="table table-bordered" ng-init="items.total = {}">
+			            <thead>
+			                <tr>
+			                    <th>Location</th>
+			                    <th>Hotel</th>
+			                    <th>Total Revenue</th>
+			                    <th>Number of Bookings</th>
+			                    <th>Number of Room Nights</th>
+			                    <th>Avg. Rate</th>
+			                    <th>Avg. Lenght of Stay</th>
+			                </tr>
+			            </thead>
+			            <tbody>
+			                <tr ng-repeat="userdata in uservalue">
+			                    <td>{{userdata.Region}}</td>
+			                    <td>{{userdata.Hotel}}</td>
+			                    <td ng-init="items.total.sum = items.total.sum + userdata.Total_Value">${{userdata.Total_Value}}</td>
+			                    <td ng-init="items.total.nor = items.total.nor + $parent.$eval(userdata.nor);">{{userdata.nor}}</td>
+			                    <td ng-init="items.total.norn = items.total.norn + userdata.Number_of_Room_Nights">{{userdata.Number_of_Room_Nights}}</td>
+			                    <td>${{userdata.Total_Value / userdata.Number_of_Room_Nights | number:2}}</td>
+			                    <td>{{userdata.Number_of_Room_Nights / userdata.nor | number:2}}</td>
+			                </tr>
+			            </tbody>
+			            <tfoot>
+			                <tr>
+			                    <th>Total</th>
+			                    <th></th>
+			                    <th>${{items.total.sum}}</th>
+			                    <th>{{items.total.nor | number}}</th>
+			                    <th>{{items.total.norn}}</th>
+			                    <th>${{items.total.sum / items.total.norn | number:2}}</th>
+			                    <th>{{items.total.norn / items.total.nor | number:2}}</th>
+			                </tr>
+			            </tfoot>
+			        </table>
+			    </div>
+			</div>
 		</div>
 		<div class="col-md-12 mt-10">
 			<h4 align="center">Summary of Hotels utilised: <b>{{Start | date:'mediumDate'}} to {{End | date:'mediumDate'}}</b></h4>
 			<hr/>
+			<div class="table-responsive">
+		        <table class="table table-bordered">
+		            <thead>
+		                <tr>
+		                    <th>Hotel</th>
+		                    <th>Number of Bookings</th>
+		                    <th>Number of Room Nights</th>
+		                    <th>Avg. Rate</th>
+		                   	<th>Total Revenue</th>
+		                </tr>
+		            </thead>
+		            <tbody>
+		                <tr ng-init="items.htotal = {}" ng-repeat="(hotelkey, hotelvalue) in hotelusedrate">
+		                    <td>{{hotelkey}}</td>
+		                    <td ng-repeat="hoteldata in hotelvalue" ng-init="items.htotal.nor = items.htotal.nor + $parent.$eval(hoteldata.nor);" ng-hide="true"></td>
+		                    <td>{{items.htotal.nor | number}}</td>
+		                   	<td ng-repeat="hoteldata in hotelvalue" ng-init="items.htotal.norn = items.htotal.norn + hoteldata.Number_of_Room_Nights;" ng-hide="true"></td>
+		                    <td>{{items.htotal.norn | number}}</td>
+		                    <td ng-repeat="hoteldata in hotelvalue" ng-init="items.htotal.sum = items.htotal.sum + hoteldata.Total_Value;" ng-hide="true"></td>
+		                    <td>${{items.htotal.sum / items.htotal.norn | number:2}}</td>
+		                    <td>${{items.htotal.sum}}</td>
+		                </tr>
+		            </tbody>
+		        </table>
+		    </div>
 		</div>
-		
 	</div>
 </div>

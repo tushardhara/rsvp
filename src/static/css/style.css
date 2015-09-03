@@ -3,6 +3,10 @@
     margin-bottom: 20px;
 }
 
+.logo{
+    margin: 0 auto;
+    display: block;
+}
 .form-signin {
     max-width: 420px;
     padding: 30px 38px 66px;
@@ -21,18 +25,6 @@
     font-size: 16px;
     height: auto;
     padding: 10px;
-}
-
-.form-signin input[type="text"] {
-    margin-bottom: 0px;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-}
-
-.form-signin input[type="password"] {
-    margin-bottom: 20px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
 }
 
 .colorgraph {
@@ -64,4 +56,21 @@ table,th{
 }
 .cursor{
     cursor: pointer;
+}
+
+.navbar-inverse{
+    background-image: url(../menu-bg.png);
+    background-position: top center;
+    background-repeat: repeat-y;
+    position: relative;
+}
+.navbar-inverse .navbar-brand{
+    color: #fff;
+}
+.navbar-inverse .navbar-nav>li>a, .navbar-inverse .navbar-text{
+    color: #fff;
+}
+.filters{
+    margin-top: 26px;
+    font-size: 18px;
 }
